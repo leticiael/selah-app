@@ -148,6 +148,30 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <svg
+        className="mt-[2rem] w-full h-[6rem] z-40 relative"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+      >
+        <path
+          fill="none"
+          stroke="#3b2a22"
+          strokeWidth="3"
+          d="M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160"
+        >
+          <animate
+            attributeName="d"
+            dur="2.5s"
+            repeatCount="indefinite"
+            values="
+                M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160;
+                M0,160 Q120,260 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160;
+                M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160
+              "
+          />
+        </path>
+      </svg>
         <p className="text-[1.15rem] text-black text-selah-soft mt-[2.5rem] mb-[1.5rem]">
           Obrigada por nos escolher, desenvolvido por Leticia Eltermann <span className="heart">❤️</span>
         </p>
