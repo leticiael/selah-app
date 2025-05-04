@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-// Ícone de folha (natureza, Heroicons)
 function LeafIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -98,12 +97,12 @@ export default function PanicoPage() {
             <p className="mb-4 text-base text-blue-900 font-medium">
               O pânico é uma resposta do corpo, mas ele passa. Você está seguro agora. Respire com calma e escolha um tempo para se acalmar.
             </p>
-            <div className="space-x-4">
+            <div className="flex flex-col md:flex-row md:justify-center md:items-center gap-4 mb-4">
               {PROTOCOLS.map((p) => (
                 <button
                   key={p.label}
                   onClick={() => setSel(p)}
-                  className="px-4 py-2 bg-white/70 text-blue-900 rounded-xl hover:bg-white transition font-semibold"
+                  className="px-4 py-2 bg-white/70 text-blue-900 rounded-xl hover:bg-white transition font-semibold w-full md:w-auto"
                 >
                   {p.label}
                 </button>
@@ -134,47 +133,72 @@ export default function PanicoPage() {
         </>
       ) : (
         <>
-          <h1 className="text-3xl font-semibold mb-4 text-blue-900">
-            {sel.label} de Respiração
-          </h1>
-          <p className="mb-6 text-blue-900">
-            {phase === "inhale"
-              ? "Inspire com calma"
-              : phase === "hold"
-              ? "Segure o ar"
-              : "Expire devagar"}
-          </p>
-          <motion.div
-            className="w-60 h-60 bg-white/40 rounded-full flex items-center justify-center text-2xl font-medium mb-6 text-blue-900"
-            animate={{
-              scale: phase === "inhale" || phase === "hold" ? 1.4 : 0.8,
-            }}
-            transition={{ duration: animationDuration, ease: "linear" }}
-          >
-            {phase === "inhale"
-              ? "Inspire"
-              : phase === "hold"
-              ? "Segure"
-              : "Expire"}
-          </motion.div>
-          <div className="text-xl text-blue-900 mb-6">
+          <div className="w-full flex flex-col items-center">
+            <h1 className="text-3xl font-semibold text-blue-900 mt-8 md:mt-12 mb-2 text-center">
+              {sel.label} de Respiração
+            </h1>
+            <div className="mb-15"></div>
+            <p className="mb-8 text-blue-900 text-center">
+              {phase === "inhale"
+                ? "Inspire com calma"
+                : phase === "hold"
+                ? "Segure o ar"
+                : "Expire devagar"}
+            </p>
+          </div>
+          {/* Neon/fumaça animada atrás da bola */}
+          <div className="relative flex items-center justify-center mb-6">
+            <motion.div
+              className="absolute"
+              style={{
+                width: "340px",
+                height: "340px",
+                borderRadius: "9999px",
+                pointerEvents: "none",
+                boxShadow:
+                  "0 0 80px 20px #60a5fa88, 0 0 160px 60px #93c5fd77, 0 0 40px 10px #3b82f699",
+                zIndex: 0,
+              }}
+              animate={{
+                scale: phase === "inhale" || phase === "hold" ? 1.5 : 1.1,
+                opacity: phase === "inhale" || phase === "hold" ? 0.6 : 0.3,
+              }}
+              transition={{ duration: animationDuration, ease: "linear" }}
+            />
+            <motion.div
+              className="w-60 h-60 bg-white/40 rounded-full flex items-center justify-center text-2xl font-medium text-blue-900 relative z-10"
+              animate={{
+                scale: phase === "inhale" || phase === "hold" ? 1.4 : 0.8,
+              }}
+              transition={{ duration: animationDuration, ease: "linear" }}
+            >
+              {phase === "inhale"
+                ? "Inspire"
+                : phase === "hold"
+                ? "Segure"
+                : "Expire"}
+            </motion.div>
+          </div>
+          <div className="text-xl text-blue-900 mb-6 text-center">
             {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
           </div>
-          <div className="fixed bottom-0 left-0 w-full">
-            <div className="w-full flex flex-col md:flex-row gap-4 justify-center items-center p-4 bg-blue-300/80 backdrop-blur-md">
-              <button
-                onClick={() => setSel(null)}
-                className="px-6 py-3 text-blue-900 rounded-xl border border-blue-900/20 hover:bg-blue-200 transition"
+          <div className="flex justify-center mt-8 mb-4">
+            <button
+              onClick={() => setSel(null)}
+              aria-label="Encerrar sessão"
+              className="flex items-center justify-center w-14 h-14 rounded-full bg-white/80 border border-blue-900/20 text-blue-900 hover:bg-blue-200 transition shadow-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-7 h-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
               >
-                Encerrar sessão
-              </button>
-              <a
-                href="/"
-                className="px-6 py-3 text-blue-900 rounded-xl border border-blue-900/20 hover:bg-blue-200 transition"
-              >
-                Voltar para início
-              </a>
-            </div>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
           </div>
         </>
       )}
