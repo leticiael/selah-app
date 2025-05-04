@@ -80,6 +80,16 @@ export default function AnsiedadePage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-green-700 flex flex-col items-center justify-center p-6 relative">
+      {/* Imagem da girafa, só em telas grandes e só na tela de escolha de tempo */}
+      {!sel && (
+        <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
+          <img
+            src="/girafasf.png"
+            alt="Ilustração de girafa"
+            className="max-h-[24rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl"
+          />
+        </div>
+      )}
       {!sel ? (
         <>
           <div className="text-center">

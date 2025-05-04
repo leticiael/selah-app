@@ -80,6 +80,15 @@ export default function RaivaPage() {
 
   return (
     <main className="min-h-screen bg-[#FF91AF] flex flex-col items-center justify-center p-6 relative">
+      {!sel && (
+        <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
+          <img
+            src="/lobosf.png"
+            alt="Ilustração de lobo"
+            className="max-h-[24rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl"
+          />
+        </div>
+      )}
       {!sel ? (
         <>
           <div className="text-center">
@@ -135,7 +144,6 @@ export default function RaivaPage() {
                 : "Expire lentamente"}
             </p>
           </div>
-          {/* Neon/fumaça animada atrás da bola */}
           <div className="relative flex items-center justify-center mb-6">
             <motion.div
               className="absolute"
@@ -167,7 +175,6 @@ export default function RaivaPage() {
           <div className="text-xl text-black mb-6 text-center">
             {Math.floor(timeLeft/60)}:{String(timeLeft%60).padStart(2,'0')}
           </div>
-          {/* Botão de seta para encerrar sessão, centralizado e abaixo da bola */}
           <div className="flex justify-center mt-8 mb-4">
             <button
               onClick={() => setSel(null)}

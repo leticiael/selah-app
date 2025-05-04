@@ -82,9 +82,18 @@ export default function PanicoPage() {
 
   const animationDuration = sel ? sel[phase] : 1;
 
-  // PALETA MAIS AZUL: fundo azul escuro, detalhes azul claro, textos claros
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#1e293b] via-[#2563eb] to-[#60a5fa] flex flex-col items-center justify-center p-6 relative">
+      {/* Imagem do panda, só em telas grandes e só na tela de escolha de tempo */}
+      {!sel && (
+        <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
+          <img
+            src="/pandasf.png"
+            alt="Ilustração de panda"
+            className="max-h-[24rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl"
+          />
+        </div>
+      )}
       {!sel ? (
         <>
           <div className="text-center">

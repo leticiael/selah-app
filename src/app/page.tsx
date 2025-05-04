@@ -7,17 +7,14 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-selah-bg text-selah-text flex flex-col items-center relative px-[1rem] overflow-hidden">
-      {/* Overlay de blur quando hover na imagem */}
       {blurActive && (
         <div className="fixed inset-0 z-30 bg-black/10 backdrop-blur-[6px] transition-all duration-300 pointer-events-none"></div>
       )}
 
-      {/* Texto centralizado no topo */}
       <div className="mt-[2rem] text-selah-soft text-[1.5rem] animate-fade-in text-center z-40 relative">
         <span className="font-bold text-[2rem] text-selah-soft">Bem vindo</span> ao <span className="text-black">SELAH.</span>
       </div>
 
-      {/* Imagem lateral */}
       <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
         <img
           src="cervo.png"
