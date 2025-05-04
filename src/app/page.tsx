@@ -1,20 +1,35 @@
+"use client";
+import { useState } from "react";
 import { CloudIcon, FireIcon, MapIcon, MoonIcon } from "@heroicons/react/24/solid";
 
 export default function Home() {
+  const [blurActive, setBlurActive] = useState(false);
+
   return (
     <main className="min-h-screen bg-selah-bg text-selah-text flex flex-col items-center relative px-[1rem] overflow-hidden">
+      {/* Overlay de blur quando hover na imagem */}
+      {blurActive && (
+        <div className="fixed inset-0 z-30 bg-black/10 backdrop-blur-[6px] transition-all duration-300 pointer-events-none"></div>
+      )}
+
       {/* Texto centralizado no topo */}
-      <div className="mt-[2rem] text-selah-soft text-[1.5rem] animate-fade-in text-center">
+      <div className="mt-[2rem] text-selah-soft text-[1.5rem] animate-fade-in text-center z-40 relative">
         <span className="font-bold text-[2rem] text-selah-soft">Bem vindo</span> ao <span className="text-black">SELAH.</span>
       </div>
 
       {/* Imagem lateral */}
-      <div className="absolute left-0 top-[6rem] hidden lg:block">
-        <img src="cervo.png" alt="Ilustração" className="max-h-[28rem] object-contain opacity-90" />
+      <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
+        <img
+          src="cervo.png"
+          alt="Ilustração"
+          className="max-h-[28rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl cursor-pointer"
+          onMouseEnter={() => setBlurActive(true)}
+          onMouseLeave={() => setBlurActive(false)}
+        />
       </div>
 
       {/* Card principal */}
-      <section className="relative bg-selah-card/70 backdrop-blur-xl rounded-[2rem] p-[3rem] max-w-[48rem] text-center shadow-md z-10 overflow-hidden mt-[4rem] mb-[4rem]">
+      <section className="relative bg-selah-card/70 backdrop-blur-xl rounded-[2rem] p-[3rem] max-w-[48rem] text-center shadow-md z-40 overflow-hidden mt-[4rem] mb-[4rem]">
         <div className="absolute inset-0 bg-gradient-to-r from-selah-soft/10 via-white/20 to-selah-soft/10 animate-calm pointer-events-none"></div>
 
         <h1 className="text-[2.5rem] font-bold mb-[1.5rem] relative">
@@ -48,9 +63,8 @@ export default function Home() {
       </section>
 
       {/* Linha de separação animada */}
-{/* Linha de separação animada */}
-<svg
-        className="mt-[2rem] w-full h-[6rem]"
+      <svg
+        className="mt-[2rem] w-full h-[6rem] z-40 relative"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
@@ -73,49 +87,49 @@ export default function Home() {
           />
         </path>
       </svg>
-{/* Footer */}
-
-<footer className="w-full bg-selah-card/50 backdrop-blur-md rounded-t-[2rem] p-[2.5rem] text-center shadow-md z-10 mt-[2.5rem] relative flex flex-col items-center">
-  <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-10">
-    <div className="flex-shrink-0 flex items-center justify-center mb-6 lg:mb-0">
-      <img
-        src="grua.png"
-        alt="Ilustração de garça"
-        className="h-[22rem] w-auto object-contain opacity-90"
-        style={{ minWidth: "12rem" }}
-      />
-    </div>
-    <div className="flex-1 w-full">
-      <h2 className="text-[2rem] font-bold mb-[1.5rem] text-black">Explore mais</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-[1.5rem]">
-        <a
-          href="https://ricardo-yoga.blogspot.com/2011/12/jalaluddin-rumi-tres-poemas.html"
-          className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
-        >
-          Poesias que acalmam
-        </a>
-        <a
-          href="/sobre"
-          className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
-        >
-          História do Selah
-        </a>
-        <a
-          href="https://www.cvv.org.br/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
-        >
-          CVV Brasil - Ligue 188
-        </a>
-      </div>
-    </div>
-  </div>
-  <p className="text-[1.15rem] text-black text-selah-soft mt-[2.5rem] mb-[1.5rem]">
-    Obrigada por nos escolher <span className="heart">❤️</span>
-  </p>
-</footer>
-
+      {/* Footer */}
+      <footer className="w-full bg-selah-card/50 backdrop-blur-md rounded-t-[2rem] p-[2.5rem] text-center shadow-md z-40 mt-[2.5rem] relative flex flex-col items-center">
+        <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-10">
+          <div className="flex-shrink-0 flex items-center justify-center mb-6 lg:mb-0">
+            <img
+              src="grua.png"
+              alt="Ilustração de garça"
+              className="h-[22rem] w-auto object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl cursor-pointer"
+              style={{ minWidth: "12rem" }}
+              onMouseEnter={() => setBlurActive(true)}
+              onMouseLeave={() => setBlurActive(false)}
+            />
+          </div>
+          <div className="flex-1 w-full">
+            <h2 className="text-[2rem] font-bold mb-[1.5rem] text-black">Explore mais</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-[1.5rem]">
+              <a
+                href="https://ricardo-yoga.blogspot.com/2011/12/jalaluddin-rumi-tres-poemas.html"
+                className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+              >
+                Poesias que acalmam
+              </a>
+              <a
+                href="/sobre"
+                className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+              >
+                História do Selah
+              </a>
+              <a
+                href="https://www.cvv.org.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+              >
+                CVV Brasil - Ligue 188
+              </a>
+            </div>
+          </div>
+        </div>
+        <p className="text-[1.15rem] text-black text-selah-soft mt-[2.5rem] mb-[1.5rem]">
+          Obrigada por nos escolher <span className="heart">❤️</span>
+        </p>
+      </footer>
     </main>
   );
 }
