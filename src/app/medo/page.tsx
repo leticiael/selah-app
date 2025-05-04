@@ -102,11 +102,13 @@ export default function MedoPage() {
               <h1 className="text-2xl font-bold text-indigo-100">
                 Escolha um tempo de respiração.
               </h1>
+              
               <EyeIcon className="w-7 h-7 text-indigo-300" />
             </div>
             <p className="mb-4 text-base text-indigo-100 font-medium">
               O medo é uma resposta natural. Você está seguro agora. Respire com calma e escolha um tempo.
             </p>
+            
             <div className="flex flex-col md:flex-row md:justify-center md:items-center gap-4 mb-4">
               {PROTOCOLS.map((p) => (
                 <button

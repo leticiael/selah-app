@@ -12,9 +12,34 @@ export default function Home() {
       )}
 
       <div className="mt-[2rem] text-selah-soft text-[1.5rem] animate-fade-in text-center z-40 relative">
+      <svg
+        className="mt-[2rem] w-full h-[6rem] z-40 relative"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+      >
+        <path
+          fill="none"
+          stroke="#3b2a22"
+          strokeWidth="3"
+          d="M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160"
+        >
+          <animate
+            attributeName="d"
+            dur="2.5s"
+            repeatCount="indefinite"
+            values="
+                M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160;
+                M0,160 Q120,260 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160;
+                M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160
+              "
+          />
+        </path>
+      </svg>
         <span className="font-bold text-[2rem] text-selah-soft">Bem vindo</span> ao <span className="text-black">SELAH.</span>
       </div>
 
+      {/* Imagem lateral */}
       <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
         <img
           src="cervo.png"
