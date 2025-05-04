@@ -127,8 +127,9 @@ export default function Home() {
           </div>
         </div>
         <p className="text-[1.15rem] text-black text-selah-soft mt-[2.5rem] mb-[1.5rem]">
-          Obrigada por nos escolher <span className="heart">❤️</span>
+          Obrigada por nos escolher, desenvolvido por Leticia Eltermann <span className="heart">❤️</span>
         </p>
+
       </footer>
     </main>
   );
