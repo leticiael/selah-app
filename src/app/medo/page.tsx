@@ -137,8 +137,8 @@ export default function MedoPage() {
             <h1 className="text-2xl sm:text-3xl font-semibold text-indigo-100 mt-6 sm:mt-12 mb-2 text-center leading-tight">
               {sel.label} de Respiração
             </h1>
-            <div className="mb-8 sm:mb-16"></div>
-            <p className="mb-6 sm:mb-8 text-indigo-100 text-center text-base sm:text-lg">
+            <div className="mb-12 sm:mb-24"></div>
+            <p className="mb-8 sm:mb-12 text-indigo-100 text-center text-base sm:text-lg">
               {phase === "inhale"
                 ? "Inspire com calma"
                 : phase === "hold"
