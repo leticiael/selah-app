@@ -10,7 +10,7 @@ export default function Home() {
 
       {/* Imagem lateral */}
       <div className="absolute left-0 top-[6rem] hidden lg:block">
-        <img src="grua.png" alt="Ilustração" className="max-h-[28rem] object-contain opacity-90" />
+        <img src="cervo.png" alt="Ilustração" className="max-h-[28rem] object-contain opacity-90" />
       </div>
 
       {/* Card principal */}
@@ -74,35 +74,48 @@ export default function Home() {
         </path>
       </svg>
 {/* Footer */}
-<footer className="w-full bg-selah-card/50 backdrop-blur-md rounded-t-[2rem] p-[2rem] text-center shadow-md z-10 mt-[2rem]">
-  <h2 className="text-[1.5rem] font-bold mb-[1rem] text-black">Explore mais</h2>
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-[1rem]">
-    <a
-      href="https://ricardo-yoga.blogspot.com/2011/12/jalaluddin-rumi-tres-poemas.html"
-      className="bg-selah-button/80 text-selah-text py-[0.75rem] px-[1rem] rounded-[0.5rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition"
-    >
-      Poesias que acalmam
-    </a>
-    <a
-      href="/sobre"
-      className="bg-selah-button/80 text-selah-text py-[0.75rem] px-[1rem] rounded-[0.5rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition"
-    >
-      História do Selah
-    </a>
-    <a
-      href="https://www.cvv.org.br/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-selah-button/80 text-selah-text py-[0.75rem] px-[1rem] rounded-[0.5rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition"
-    >
-      CVV Brasil - Ligue 188
-    </a>
+
+<footer className="w-full bg-selah-card/50 backdrop-blur-md rounded-t-[2rem] p-[2.5rem] text-center shadow-md z-10 mt-[2.5rem] relative flex flex-col items-center">
+  <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-10">
+    <div className="flex-shrink-0 flex items-center justify-center mb-6 lg:mb-0">
+      <img
+        src="grua.png"
+        alt="Ilustração de garça"
+        className="h-[22rem] w-auto object-contain opacity-90"
+        style={{ minWidth: "12rem" }}
+      />
+    </div>
+    <div className="flex-1 w-full">
+      <h2 className="text-[2rem] font-bold mb-[1.5rem] text-black">Explore mais</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-[1.5rem]">
+        <a
+          href="https://ricardo-yoga.blogspot.com/2011/12/jalaluddin-rumi-tres-poemas.html"
+          className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+        >
+          Poesias que acalmam
+        </a>
+        <a
+          href="/sobre"
+          className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+        >
+          História do Selah
+        </a>
+        <a
+          href="https://www.cvv.org.br/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+        >
+          CVV Brasil - Ligue 188
+        </a>
+      </div>
+    </div>
   </div>
-  
-  
-  <p className="text-[1rem] text-black text-selah-soft mt-[2rem] mb-[1.5rem]">
-  Obrigada por nos escolher <span className="heart">❤️</span>
-</p></footer>
+  <p className="text-[1.15rem] text-black text-selah-soft mt-[2.5rem] mb-[1.5rem]">
+    Obrigada por nos escolher <span className="heart">❤️</span>
+  </p>
+</footer>
+
     </main>
   );
 }
