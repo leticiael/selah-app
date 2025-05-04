@@ -82,19 +82,20 @@ export default function PanicoPage() {
 
   const animationDuration = sel ? sel[phase] : 1;
 
+  // PALETA MAIS AZUL: fundo azul escuro, detalhes azul claro, textos claros
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400 flex flex-col items-center justify-center p-6 relative">
+    <main className="min-h-screen bg-gradient-to-br from-[#1e293b] via-[#2563eb] to-[#60a5fa] flex flex-col items-center justify-center p-6 relative">
       {!sel ? (
         <>
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <LeafIcon className="w-7 h-7 text-blue-500" />
-              <h1 className="text-2xl font-bold text-blue-900">
+              <LeafIcon className="w-7 h-7 text-blue-200" />
+              <h1 className="text-2xl font-bold text-blue-100">
                 Escolha um tempo de respiração.
               </h1>
-              <LeafIcon className="w-7 h-7 text-blue-500" />
+              <LeafIcon className="w-7 h-7 text-blue-200" />
             </div>
-            <p className="mb-4 text-base text-blue-900 font-medium">
+            <p className="mb-4 text-base text-blue-100 font-medium">
               O pânico é uma resposta do corpo, mas ele passa. Você está seguro agora. Respire com calma e escolha um tempo para se acalmar.
             </p>
             <div className="flex flex-col md:flex-row md:justify-center md:items-center gap-4 mb-4">
@@ -102,13 +103,13 @@ export default function PanicoPage() {
                 <button
                   key={p.label}
                   onClick={() => setSel(p)}
-                  className="px-4 py-2 bg-white/70 text-blue-900 rounded-xl hover:bg-white transition font-semibold w-full md:w-auto"
+                  className="px-4 py-2 bg-white/10 text-blue-100 rounded-xl hover:bg-white/20 transition font-semibold w-full md:w-auto border border-blue-400/30"
                 >
                   {p.label}
                 </button>
               ))}
             </div>
-            <p className="mt-6 text-xs text-blue-900/70 max-w-md mx-auto">
+            <p className="mt-6 text-xs text-blue-200/80 max-w-md mx-auto">
               A respiração 4-7-8 (inspire por 4s, segure 7s, expire 8s) ajuda seu corpo a sair do modo de alerta.{" "}
               <a
                 href="https://www.medicalnewstoday.com/articles/324417"
@@ -121,10 +122,10 @@ export default function PanicoPage() {
             </p>
           </div>
           <div className="fixed bottom-0 left-0 w-full">
-            <div className="w-full flex justify-center items-center p-4 bg-blue-300/80 backdrop-blur-md">
+            <div className="w-full flex justify-center items-center p-4 bg-[#2563eb]/80 backdrop-blur-md">
               <a
                 href="/"
-                className="px-6 py-3 text-blue-900 rounded-xl border border-blue-900/20 hover:bg-blue-200 transition"
+                className="px-6 py-3 text-blue-100 rounded-xl border border-blue-200/20 hover:bg-[#60a5fa]/60 transition"
               >
                 Voltar para início
               </a>
@@ -134,11 +135,11 @@ export default function PanicoPage() {
       ) : (
         <>
           <div className="w-full flex flex-col items-center">
-            <h1 className="text-3xl font-semibold text-blue-900 mt-8 md:mt-12 mb-2 text-center">
+            <h1 className="text-3xl font-semibold text-blue-100 mt-8 md:mt-12 mb-2 text-center">
               {sel.label} de Respiração
             </h1>
             <div className="mb-15"></div>
-            <p className="mb-8 text-blue-900 text-center">
+            <p className="mb-8 text-blue-200 text-center">
               {phase === "inhale"
                 ? "Inspire com calma"
                 : phase === "hold"
@@ -156,7 +157,7 @@ export default function PanicoPage() {
                 borderRadius: "9999px",
                 pointerEvents: "none",
                 boxShadow:
-                  "0 0 80px 20px #60a5fa88, 0 0 160px 60px #93c5fd77, 0 0 40px 10px #3b82f699",
+                  "0 0 80px 20px #60a5fa88, 0 0 160px 60px #2563eb77, 0 0 40px 10px #38bdf899",
                 zIndex: 0,
               }}
               animate={{
@@ -166,7 +167,7 @@ export default function PanicoPage() {
               transition={{ duration: animationDuration, ease: "linear" }}
             />
             <motion.div
-              className="w-60 h-60 bg-white/40 rounded-full flex items-center justify-center text-2xl font-medium text-blue-900 relative z-10"
+              className="w-60 h-60 bg-white/20 rounded-full flex items-center justify-center text-2xl font-medium text-blue-100 relative z-10 shadow-lg"
               animate={{
                 scale: phase === "inhale" || phase === "hold" ? 1.4 : 0.8,
               }}
@@ -179,14 +180,14 @@ export default function PanicoPage() {
                 : "Expire"}
             </motion.div>
           </div>
-          <div className="text-xl text-blue-900 mb-6 text-center">
+          <div className="text-xl text-blue-100 mb-6 text-center">
             {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
           </div>
           <div className="flex justify-center mt-8 mb-4">
             <button
               onClick={() => setSel(null)}
               aria-label="Encerrar sessão"
-              className="flex items-center justify-center w-14 h-14 rounded-full bg-white/80 border border-blue-900/20 text-blue-900 hover:bg-blue-200 transition shadow-lg"
+              className="flex items-center justify-center w-14 h-14 rounded-full bg-white/10 border border-blue-200/20 text-blue-100 hover:bg-white/20 transition shadow-lg"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
