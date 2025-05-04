@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Selah
 
-## Getting Started
+[➡️ Acesse o projeto](https://selah-app-three.vercel.app) | [Sobre](https://selah-app-three.vercel.app/sobre)
 
-First, run the development server:
+**Selah** é uma pausa.
+
+Um projeto criado por alguém que, em meio à turbulência da vida e da saúde mental, encontrou na respiração uma forma de se reconectar. Inspirado por experiências reais, o Selah oferece um espaço digital onde qualquer pessoa pode respirar com calma, sem precisar entregar dados, criar contas ou enfrentar estímulos excessivos.
+
+“Selah” é uma palavra que aparece em textos poéticos, especialmente nos Salmos, e representa um momento de pausa e contemplação. Esse nome não foi escolhido por acaso. Ele traduz a proposta do projeto: oferecer um respiro, um intervalo para quem precisa.
+
+---
+
+![20250504-1636-05 9897384](https://github.com/user-attachments/assets/e2b6ee43-c591-4609-8db3-2fdfe658ed48)
+
+
+## Sobre o projeto
+
+Este site foi criado como parte de um projeto integrador de Engenharia de Software, mas nasceu de um desejo muito mais íntimo: tornar acessível algo que fez diferença na minha própria vida. Passar por momentos difíceis me mostrou o quanto recursos simples, como exercícios respiratórios, podem trazer alívio real. Com isso em mente, desenvolvi o Selah com foco em acessibilidade, privacidade e empatia.
+
+---
+
+## Funcionalidades
+
+- Exercícios de respiração guiada com animações suaves  
+- Interface clara e acessível, pensada para não sobrecarregar a mente  
+- Mensagens acolhedoras, para momentos em que o silêncio pesa  
+- Sem rastreamento, sem coleta de dados, sem exigência de login
+
+---
+
+## Tecnologias utilizadas
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+- SVGs autorais e responsivos
+- Deploy serverless com [Vercel](https://vercel.com/)
+
+---
+
+## Como rodar localmente
 
 ```bash
+git clone https://github.com/seu-usuario/selah.git
+cd selah
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
