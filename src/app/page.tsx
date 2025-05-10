@@ -124,12 +124,12 @@ export default function Home() {
           <div className="flex-1 w-full">
             <h2 className="text-[2rem] font-bold mb-[1.5rem] text-black">Explore mais</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-[1.5rem]">
-              <a
-                href="https://ricardo-yoga.blogspot.com/2011/12/jalaluddin-rumi-tres-poemas.html"
-                className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
-              >
-                Poesias que acalmam
-              </a>
+<a
+  href="/poesias"
+  className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+>
+  Poesias que acalmam
+</a>
               <a
                 href="/sobre"
                 className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
