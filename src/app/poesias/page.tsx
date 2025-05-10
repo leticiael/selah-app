@@ -90,7 +90,7 @@ export default function Poesias() {
       )}
       {/* Menu de autores (hamburguer) */}
       {menuOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-[#8c6849cc] backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+        <div className="fixed top-0 left-0 w-full h-full bg-[#8c6849cc] backdrop-blur-sm z-50 flex flex-col items-center justify-center overflow-auto max-h-screen">
           <button
             className="absolute top-6 left-6 w-10 h-10 rounded-full bg-gradient-to-br from-[#ffe5ec] via-[#eecda3] to-[#a89060] shadow-lg flex items-center justify-center border-2 border-[#eecda3] transition"
             aria-label="Fechar menu"
