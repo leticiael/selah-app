@@ -3,6 +3,7 @@
 import { useRef, useState, RefObject } from "react";
 
 type RefsType = {
+  [key: string]: RefObject<HTMLDivElement>;
   murakami: RefObject<HTMLDivElement>;
   rumi1: RefObject<HTMLDivElement>;
   rumi2: RefObject<HTMLDivElement>;
@@ -15,20 +16,24 @@ type RefsType = {
   machado: RefObject<HTMLDivElement>;
 };
 
+const autores = [
+  { key: "murakami", label: "Haruki Murakami" },
+  { key: "rumi1", label: "Jalāl ad-Dīn Rūmī (Potencial)" },
+  { key: "rumi2", label: "Jalāl ad-Dīn Rūmī (Mensageiros)" },
+  { key: "rosa", label: "João Guimarães Rosa" },
+  { key: "rumi3", label: "Jalāl ad-Dīn Rūmī (Comunidade)" },
+  { key: "qabbani", label: "Nizar Qabbani" },
+  { key: "tagore", label: "Rabindranath Tagore" },
+  { key: "rilke", label: "Rainer Maria Rilke" },
+  { key: "hafez", label: "Hafez" },
+  { key: "machado", label: "Antonio Machado" },
+];
+
 export default function Poesias() {
   // Refs para cada autor
-  const refs: RefsType = {
-    murakami: useRef<HTMLDivElement>(null),
-    rumi1: useRef<HTMLDivElement>(null),
-    rumi2: useRef<HTMLDivElement>(null),
-    rosa: useRef<HTMLDivElement>(null),
-    rumi3: useRef<HTMLDivElement>(null),
-    qabbani: useRef<HTMLDivElement>(null),
-    tagore: useRef<HTMLDivElement>(null),
-    rilke: useRef<HTMLDivElement>(null),
-    hafez: useRef<HTMLDivElement>(null),
-    machado: useRef<HTMLDivElement>(null),
-  };
+  const refs = Object.fromEntries(
+    autores.map(({ key }) => [key, useRef<HTMLDivElement>(null)])
+  ) as RefsType;
 
   // Estado do menu hamburguer
   const [menuOpen, setMenuOpen] = useState(false);
@@ -82,66 +87,15 @@ export default function Poesias() {
             </svg>
           </button>
           <nav className="flex flex-col gap-4 mt-10">
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.murakami)}
-            >
-              Haruki Murakami
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.rumi1)}
-            >
-              Jalāl ad-Dīn Rūmī (Potencial)
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.rumi2)}
-            >
-              Jalāl ad-Dīn Rūmī (Mensageiros)
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.rosa)}
-            >
-              João Guimarães Rosa
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.rumi3)}
-            >
-              Jalāl ad-Dīn Rūmī (Comunidade)
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.qabbani)}
-            >
-              Nizar Qabbani
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.tagore)}
-            >
-              Rabindranath Tagore
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.rilke)}
-            >
-              Rainer Maria Rilke
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.hafez)}
-            >
-              Hafez
-            </button>
-            <button
-              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
-              onClick={() => scrollTo(refs.machado)}
-            >
-              Antonio Machado
-            </button>
+            {autores.map(({ key, label }) => (
+              <button
+                key={key}
+                className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+                onClick={() => scrollTo(refs[key])}
+              >
+                {label}
+              </button>
+            ))}
           </nav>
         </div>
       )}
