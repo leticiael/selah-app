@@ -26,7 +26,6 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body
         className={`${playfairDisplay.variable} ${inter.variable} antialiased font-sans`}
-        style={{ backgroundColor: "#9B7D61" }}
       >
         {children}
       </body>

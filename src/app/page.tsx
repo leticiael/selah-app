@@ -6,7 +6,10 @@ export default function Home() {
   const [blurActive, setBlurActive] = useState(false);
 
   return (
-    <main className="min-h-screen bg-selah-bg text-selah-text flex flex-col items-center relative px-[1rem] overflow-hidden">
+    <main
+      className="min-h-screen text-selah-text flex flex-col items-center relative px-[1rem] overflow-hidden"
+      style={{ backgroundColor: "#9B7D61" }}
+    >
       {blurActive && (
         <div className="fixed inset-0 z-30 bg-black/10 backdrop-blur-[6px] transition-all duration-300 pointer-events-none"></div>
       )}
@@ -39,18 +42,16 @@ export default function Home() {
         <span className="font-bold text-[2rem] text-selah-soft">Bem vindo</span> ao <span className="text-black">SELAH.</span>
       </div>
 
-      {/* Imagem de cervo ao lado do card principal */}
       <div className="w-full flex flex-col lg:flex-row items-center justify-center relative mt-[4rem] mb-[4rem]">
         <div className="hidden lg:flex flex-col justify-center items-center mr-8">
-        <img
-  src="cervo.png"
-  alt="Ilustração de cervo"
-  className="max-h-[28rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl cursor-pointer"
-  onMouseEnter={() => setBlurActive(true)}
-  onMouseLeave={() => setBlurActive(false)}
-/>
+          <img
+            src="cervo.png"
+            alt="Ilustração de cervo"
+            className="max-h-[28rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl cursor-pointer"
+            onMouseEnter={() => setBlurActive(true)}
+            onMouseLeave={() => setBlurActive(false)}
+          />
         </div>
-        {/* Card principal */}
         <section className="relative bg-selah-card/70 backdrop-blur-xl rounded-[2rem] p-[3rem] max-w-[48rem] text-center shadow-md z-40 overflow-hidden w-full">
           <div className="absolute inset-0 bg-gradient-to-r from-selah-soft/10 via-white/20 to-selah-soft/10 animate-calm pointer-events-none"></div>
           <h1 className="text-[2.5rem] font-bold mb-[1.5rem] relative">
@@ -107,10 +108,8 @@ export default function Home() {
         </path>
       </svg>
 
-      {/* Footer */}
       <footer className="w-full bg-selah-card/50 backdrop-blur-md rounded-t-[2rem] p-[2.5rem] text-center shadow-md z-40 mt-[2.5rem] relative flex flex-col items-center">
         <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-10">
-          {/* Imagem de garça */}
           <div className="flex-shrink-0 flex items-center justify-center mb-6 lg:mb-0">
             <img
               src="grua.png"
@@ -124,12 +123,12 @@ export default function Home() {
           <div className="flex-1 w-full">
             <h2 className="text-[2rem] font-bold mb-[1.5rem] text-black">Explore mais</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-[1.5rem]">
-<a
-  href="/poesias"
-  className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
->
-  Poesias que acalmam
-</a>
+              <a
+                href="/poesias"
+                className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
+              >
+                Poesias que acalmam
+              </a>
               <a
                 href="/sobre"
                 className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
