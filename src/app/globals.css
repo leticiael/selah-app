@@ -74,3 +74,7 @@ body {
     background-position: 0% 50%;
   }
 }
+
+.overflow-hidden {
+  overflow: hidden !important;
+}

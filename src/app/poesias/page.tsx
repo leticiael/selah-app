@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, RefObject } from "react";
+import { useRef, useState, RefObject, useEffect } from "react";
 
 type RefsType = {
   [key: string]: RefObject<HTMLDivElement>;
@@ -38,6 +38,16 @@ export default function Poesias() {
   // Estado do menu hamburguer
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Impede o scroll do body quando o menu está aberto
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [menuOpen]);
+
   // Função para scroll suave até o autor e fechar menu
   const scrollTo = (ref: RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -54,7 +64,7 @@ export default function Poesias() {
         <a
           href="/"
           className="fixed bottom-6 right-6 z-50 px-5 py-3 bg-gradient-to-r from-[#ffe5ec] via-[#f9d6c1] to-[#ffe5ec] text-[#170004] rounded-full shadow-2xl border border-[#f9d6c1]/60 hover:bg-[#f9d6c1] transition font-bold tracking-wide backdrop-blur-md bg-opacity-40 flex items-center gap-2"
-          style={{ opacity: 0.7, letterSpacing: "0.05em" }}
+          style={{ opacity: 0.5, letterSpacing: "0.05em", background: "rgba(255,255,255,0.1)" }}
           aria-label="Voltar para início"
         >
           <span>Início</span>
@@ -93,7 +103,7 @@ export default function Poesias() {
             </svg>
           </button>
           {/* O menu agora tem um padding-top para não cobrir o título no mobile */}
-          <nav className="flex flex-col gap-4 mt-10 pt-24 sm:pt-10 w-full items-center">
+          <nav className="flex flex-col gap-4 mt-10 pt-32 sm:pt-10 w-full items-center">
             {autores.map(({ key, label }) => (
               <button
                 key={key}
@@ -253,7 +263,6 @@ export default function Poesias() {
             </blockquote>
           </section>
         </div>
-        {/* Botão de voltar ao início removido daqui */}
       </div>
     </main>
   );
