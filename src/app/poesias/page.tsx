@@ -1,10 +1,23 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, RefObject } from "react";
+
+type RefsType = {
+  murakami: RefObject<HTMLDivElement>;
+  rumi1: RefObject<HTMLDivElement>;
+  rumi2: RefObject<HTMLDivElement>;
+  rosa: RefObject<HTMLDivElement>;
+  rumi3: RefObject<HTMLDivElement>;
+  qabbani: RefObject<HTMLDivElement>;
+  tagore: RefObject<HTMLDivElement>;
+  rilke: RefObject<HTMLDivElement>;
+  hafez: RefObject<HTMLDivElement>;
+  machado: RefObject<HTMLDivElement>;
+};
 
 export default function Poesias() {
   // Refs para cada autor
-  const refs = {
+  const refs: RefsType = {
     murakami: useRef<HTMLDivElement>(null),
     rumi1: useRef<HTMLDivElement>(null),
     rumi2: useRef<HTMLDivElement>(null),
@@ -21,7 +34,7 @@ export default function Poesias() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Função para scroll suave até o autor e fechar menu
-  const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
+  const scrollTo = (ref: RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     setMenuOpen(false);
   };
