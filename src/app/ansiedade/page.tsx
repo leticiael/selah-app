@@ -68,7 +68,6 @@ export default function AnsiedadePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-green-700 flex flex-col items-center justify-center p-6 relative">
       <Toaster />
-      {/* Ilustração da girafa */}
       {!sel && (
         <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
           <img
@@ -81,7 +80,6 @@ export default function AnsiedadePage() {
 
       {!sel ? (
         <>
-          {/* Tela de escolha de tempo */}
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
               <WindIcon className="w-7 h-7 text-green-300" />
@@ -133,7 +131,6 @@ export default function AnsiedadePage() {
         <>
           {!completed ? (
             <>
-              {/* Tela da respiração */}
               <div className="w-full flex flex-col items-center">
                 <h1 className="text-3xl font-semibold text-green-100 mt-8 md:mt-12 mb-2 text-center">
                   {sel.label} de Respiração
@@ -143,7 +140,6 @@ export default function AnsiedadePage() {
                 </p>
               </div>
 
-              {/* Bola de respiração */}
               <BreathingBall
                 phase={phase}
                 animationDuration={animationDuration}
@@ -153,14 +149,36 @@ export default function AnsiedadePage() {
                 backgroundColor="rgba(255, 255, 255, 0.4)"
               />
 
-              {/* Cronômetro */}
               <div className="text-xl text-green-100 mb-6 text-center">
                 {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+              </div>
+
+              <div className="flex justify-center mt-2 mb-4">
+                <button
+                  onClick={() => {
+                    setSel(null);
+                    setCompleted(false);
+                    setHasStarted(false);
+                    setEntry("");
+                  }}
+                  aria-label="Voltar para escolha de tempo"
+                  className="flex items-center justify-center w-14 h-14 rounded-full bg-white/80 border border-green-900/20 text-green-900 hover:bg-green-200 transition shadow-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-7 h-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
               </div>
             </>
           ) : (
             <>
-              {/* Campo de reflexão */}
               <div className="z-10 w-full max-w-xl px-4 transition-all duration-500 ease-in-out opacity-100 transform translate-y-0">
                 <h2 className="text-2xl font-semibold text-white mb-4">Como você se sente agora?</h2>
                 <textarea
@@ -179,7 +197,6 @@ export default function AnsiedadePage() {
                 </div>
               </div>
 
-              {/* Botão para encerrar */}
               <div className="flex justify-center mt-8 mb-4">
                 <button
                   onClick={() => {

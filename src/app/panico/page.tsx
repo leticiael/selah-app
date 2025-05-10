@@ -68,7 +68,6 @@ export default function PanicoPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#1e293b] via-[#2563eb] to-[#60a5fa] flex flex-col items-center justify-center p-6 relative">
       <Toaster />
-      {/* Imagem do panda, só em telas grandes e só na tela de escolha de tempo */}
       {!sel && (
         <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
           <img
@@ -166,10 +165,32 @@ export default function PanicoPage() {
               <div className="text-xl text-blue-100 mb-6 text-center">
                 {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
               </div>
+              <div className="flex justify-center mt-2 mb-4">
+                <button
+                  onClick={() => {
+                    setSel(null);
+                    setCompleted(false);
+                    setHasStarted(false);
+                    setEntry("");
+                  }}
+                  aria-label="Voltar para escolha de tempo"
+                  className="flex items-center justify-center w-14 h-14 rounded-full bg-white/10 border border-blue-200/20 text-blue-100 hover:bg-white/20 transition shadow-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-7 h-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              </div>
             </>
           ) : (
             <>
-              {/* Campo de reflexão */}
               <div className="z-10 w-full max-w-xl px-4 transition-all duration-500 ease-in-out opacity-100 transform translate-y-0">
                 <h2 className="text-2xl font-semibold text-blue-100 mb-4">Como você se sente agora?</h2>
                 <textarea
@@ -187,8 +208,6 @@ export default function PanicoPage() {
                   </button>
                 </div>
               </div>
-
-              {/* Botão para encerrar */}
               <div className="flex justify-center mt-8 mb-4">
                 <button
                   onClick={() => {

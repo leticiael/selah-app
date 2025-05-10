@@ -68,7 +68,6 @@ export default function MedoPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-800 flex flex-col items-center justify-center p-4 sm:p-6 relative">
       <Toaster />
-      {/* Imagem do cavalo */}
       {!sel && (
         <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
           <img
@@ -81,7 +80,6 @@ export default function MedoPage() {
 
       {!sel ? (
         <>
-          {/* Tela de escolha de tempo */}
           <div className="text-center w-full max-w-lg mx-auto">
             <div className="flex items-center justify-center gap-2 mb-2">
               <EyeIcon className="w-7 h-7 text-indigo-300" />
@@ -127,7 +125,6 @@ export default function MedoPage() {
         <>
           {!completed ? (
             <>
-              {/* Tela da respiração */}
               <div className="w-full flex flex-col items-center px-2">
                 <h1 className="text-2xl sm:text-3xl font-semibold text-indigo-100 mt-6 sm:mt-12 mb-2 text-center leading-tight">
                   {sel.label} de Respiração
@@ -149,10 +146,33 @@ export default function MedoPage() {
               <div className="text-lg sm:text-xl text-indigo-100 mb-6 text-center">
                 {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
               </div>
+
+              <div className="flex justify-center mt-2 mb-4">
+                <button
+                  onClick={() => {
+                    setSel(null);
+                    setCompleted(false);
+                    setHasStarted(false);
+                    setEntry("");
+                  }}
+                  aria-label="Voltar para escolha de tempo"
+                  className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/80 border border-indigo-900/20 text-indigo-900 hover:bg-indigo-200 transition shadow-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 sm:w-7 sm:h-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              </div>
             </>
           ) : (
             <>
-              {/* Campo de reflexão */}
               <div className="z-10 w-full max-w-xl px-4 transition-all duration-500 ease-in-out opacity-100 transform translate-y-0">
                 <h2 className="text-2xl font-semibold text-white mb-4">Como você se sente agora?</h2>
                 <textarea
@@ -171,7 +191,6 @@ export default function MedoPage() {
                 </div>
               </div>
 
-              {/* Botão para encerrar */}
               <div className="flex justify-center mt-8 mb-4">
                 <button
                   onClick={() => {
