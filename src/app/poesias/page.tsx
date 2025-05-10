@@ -49,16 +49,22 @@ export default function Poesias() {
       className="relative min-h-screen w-full flex flex-col items-center justify-center"
       style={{ backgroundColor: "#8C6849" }}
     >
-      {/* Botão flutuante para voltar */}
-      <a
-        href="/"
-        className="fixed bottom-6 right-6 z-50 px-5 py-3 bg-gradient-to-r from-[#ffe5ec] via-[#f9d6c1] to-[#ffe5ec] text-[#170004] rounded-full shadow-2xl border border-[#f9d6c1]/60 hover:bg-[#f9d6c1] transition font-bold tracking-wide"
-        style={{ opacity: 0.97, letterSpacing: "0.05em" }}
-        aria-label="Voltar para início"
-      >
-        Início
-      </a>
-      {/* Botão hamburguer (bolinha de luz com ícone) */}
+      {/* Botão flutuante para voltar (só aparece se o menu NÃO está aberto) */}
+      {!menuOpen && (
+        <a
+          href="/"
+          className="fixed bottom-6 right-6 z-50 px-5 py-3 bg-gradient-to-r from-[#ffe5ec] via-[#f9d6c1] to-[#ffe5ec] text-[#170004] rounded-full shadow-2xl border border-[#f9d6c1]/60 hover:bg-[#f9d6c1] transition font-bold tracking-wide backdrop-blur-md bg-opacity-40 flex items-center gap-2"
+          style={{ opacity: 0.7, letterSpacing: "0.05em" }}
+          aria-label="Voltar para início"
+        >
+          <span>Início</span>
+          {/* Setinha para esquerda */}
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <path d="M14 6l-4 5 4 5" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      )}
+      {/* Botão hamburguer (bolinha de luz com ícone, só aparece se o menu NÃO está aberto) */}
       {!menuOpen && (
         <button
           className="fixed top-6 left-6 z-50 w-10 h-10 rounded-full bg-gradient-to-br from-[#ffe5ec] via-[#eecda3] to-[#a89060] shadow-lg flex items-center justify-center animate-pulse border-2 border-[#eecda3] transition"
@@ -86,11 +92,12 @@ export default function Poesias() {
               <line x1="16" y1="6" x2="6" y2="16" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </button>
-          <nav className="flex flex-col gap-4 mt-10">
+          {/* O menu agora tem um padding-top para não cobrir o título no mobile */}
+          <nav className="flex flex-col gap-4 mt-10 pt-24 sm:pt-10 w-full items-center">
             {autores.map(({ key, label }) => (
               <button
                 key={key}
-                className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+                className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg w-11/12 max-w-xs"
                 onClick={() => scrollTo(refs[key])}
               >
                 {label}
@@ -246,14 +253,7 @@ export default function Poesias() {
             </blockquote>
           </section>
         </div>
-        <div className="text-center mt-8">
-          <a
-            href="/"
-            className="inline-block px-6 py-3 text-[#170004] bg-gradient-to-r from-[#ffe5ec] via-[#f9d6c1] to-[#ffe5ec] rounded-xl border border-[#f9d6c1]/40 hover:bg-[#f9d6c1] transition font-semibold shadow-md"
-          >
-            Voltar para início
-          </a>
-        </div>
+        {/* Botão de voltar ao início removido daqui */}
       </div>
     </main>
   );
