@@ -1,42 +1,162 @@
 "use client";
 
+import { useRef, useState } from "react";
+
 export default function Poesias() {
+  // Refs para cada autor
+  const refs = {
+    murakami: useRef<HTMLDivElement>(null),
+    rumi1: useRef<HTMLDivElement>(null),
+    rumi2: useRef<HTMLDivElement>(null),
+    rosa: useRef<HTMLDivElement>(null),
+    rumi3: useRef<HTMLDivElement>(null),
+    qabbani: useRef<HTMLDivElement>(null),
+    tagore: useRef<HTMLDivElement>(null),
+    rilke: useRef<HTMLDivElement>(null),
+    hafez: useRef<HTMLDivElement>(null),
+    machado: useRef<HTMLDivElement>(null),
+  };
+
+  // Estado do menu hamburguer
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Função para scroll suave até o autor e fechar menu
+  const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setMenuOpen(false);
+  };
+
   return (
     <main
       className="relative min-h-screen w-full flex flex-col items-center justify-center"
-      style={{ backgroundColor: "#9B7D61" }}
+      style={{ backgroundColor: "#8C6849" }}
     >
-      {/* Fundo animado sutil com gradiente e blur */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <div
-          className="w-full h-full absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 40%, #00000022 0%, transparent 80%), radial-gradient(ellipse 60% 40% at 70% 80%, #fff8f0 0%, transparent 80%)",
-            filter: "blur(32px)",
-            opacity: 0.7,
-            transition: "background 2s"
-          }}
-        />
-      </div>
-      <div className="max-w-2xl mx-auto px-4 sm:px-8 py-12 sm:py-20 space-y-10 relative z-10">
-        <h1 className="text-3xl font-bold text-black mb-8 tracking-tight text-center">
+      {/* Botão flutuante para voltar */}
+      <a
+        href="/"
+        className="fixed bottom-6 right-6 z-50 px-5 py-3 bg-gradient-to-r from-[#ffe5ec] via-[#f9d6c1] to-[#ffe5ec] text-[#170004] rounded-full shadow-2xl border border-[#f9d6c1]/60 hover:bg-[#f9d6c1] transition font-bold tracking-wide"
+        style={{ opacity: 0.97, letterSpacing: "0.05em" }}
+        aria-label="Voltar para início"
+      >
+        Início
+      </a>
+      {/* Botão hamburguer (bolinha de luz com ícone) */}
+      {!menuOpen && (
+        <button
+          className="fixed top-6 left-6 z-50 w-10 h-10 rounded-full bg-gradient-to-br from-[#ffe5ec] via-[#eecda3] to-[#a89060] shadow-lg flex items-center justify-center animate-pulse border-2 border-[#eecda3] transition"
+          aria-label="Abrir menu de autores"
+          onClick={() => setMenuOpen(true)}
+        >
+          {/* Ícone de menu (hamburger) */}
+          <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+            <rect x="5" y="8" width="16" height="2.5" rx="1.2" fill="#a89060"/>
+            <rect x="5" y="13" width="16" height="2.5" rx="1.2" fill="#a89060"/>
+          </svg>
+        </button>
+      )}
+      {/* Menu de autores (hamburguer) */}
+      {menuOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-[#8c6849cc] backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+          <button
+            className="absolute top-6 left-6 w-10 h-10 rounded-full bg-gradient-to-br from-[#ffe5ec] via-[#eecda3] to-[#a89060] shadow-lg flex items-center justify-center border-2 border-[#eecda3] transition"
+            aria-label="Fechar menu"
+            onClick={() => setMenuOpen(false)}
+          >
+            {/* Ícone de fechar (X) */}
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+              <line x1="6" y1="6" x2="16" y2="16" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round"/>
+              <line x1="16" y1="6" x2="6" y2="16" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+          <nav className="flex flex-col gap-4 mt-10">
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.murakami)}
+            >
+              Haruki Murakami
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.rumi1)}
+            >
+              Jalāl ad-Dīn Rūmī (Potencial)
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.rumi2)}
+            >
+              Jalāl ad-Dīn Rūmī (Mensageiros)
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.rosa)}
+            >
+              João Guimarães Rosa
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.rumi3)}
+            >
+              Jalāl ad-Dīn Rūmī (Comunidade)
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.qabbani)}
+            >
+              Nizar Qabbani
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.tagore)}
+            >
+              Rabindranath Tagore
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.rilke)}
+            >
+              Rainer Maria Rilke
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.hafez)}
+            >
+              Hafez
+            </button>
+            <button
+              className="px-6 py-3 rounded-lg bg-[#eecda3] text-[#3e1f0d] font-semibold shadow hover:bg-[#a89060] hover:text-white transition text-lg"
+              onClick={() => scrollTo(refs.machado)}
+            >
+              Antonio Machado
+            </button>
+          </nav>
+        </div>
+      )}
+      {/* Conteúdo das poesias */}
+      <div className="max-w-2xl mx-auto px-4 sm:px-8 py-8 sm:py-12 space-y-10 relative z-10">
+        <h1 className="text-4xl font-extrabold text-[#3e1f0d] mb-10 tracking-tight text-center drop-shadow-lg">
           Poesias para Respirar
         </h1>
         <div className="space-y-10 font-sans" style={{ fontFamily: 'Inter, sans-serif' }}>
           {/* Haruki Murakami */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Haruki Murakami</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.murakami}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#f9e6b3]/30 via-white/40 to-[#eecda3]/30 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Haruki Murakami</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               E quando a tempestade tiver passado, mal te lembrarás de ter conseguido atravessá-la, de ter conseguido sobreviver. Nem sequer terás a certeza de a tormenta ter realmente chegado ao fim. Mas uma coisa é certa. Quando saíres da tempestade já não serás a mesma pessoa. Só assim as tempestades fazem sentido.
             </blockquote>
           </section>
           {/* Jalāl ad-Dīn Rūmī */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Jalāl ad-Dīn Rūmī</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.rumi1}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Jalāl ad-Dīn Rūmī</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               Você nasceu com potencial.<br />
               Você nasceu com bondade e confiança.<br />
               Você nasceu com ideais e sonhos.<br />
@@ -48,27 +168,36 @@ export default function Poesias() {
             </blockquote>
           </section>
           {/* Jalāl ad-Dīn Rūmī - Mensageiros */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Jalāl ad-Dīn Rūmī</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.rumi2}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Jalāl ad-Dīn Rūmī</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               Estas dores que você sente são mensageiros.<br />
               Ouça-os.
             </blockquote>
           </section>
           {/* João Guimarães Rosa */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">João Guimarães Rosa</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.rosa}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">João Guimarães Rosa</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               A vida é assim: esquenta e esfria, aperta e daí afrouxa, sossega e depois desinquieta. O que ela quer da gente é coragem.
             </blockquote>
           </section>
           {/* Jalāl ad-Dīn Rūmī - Comunidade do espírito */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Jalāl ad-Dīn Rūmī</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.rumi3}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Jalāl ad-Dīn Rūmī</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               Há uma comunidade do espírito.<br /><br />
               Junte-se a ela e sinta o deleite<br />
               de caminhar por uma rua barulhenta<br />
@@ -95,42 +224,57 @@ export default function Poesias() {
             </blockquote>
           </section>
           {/* Nizar Qabbani */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Nizar Qabbani</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.qabbani}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Nizar Qabbani</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               Escrevo para ti, porque o amor é mais forte que a guerra. Porque a rosa é mais forte que o canhão. Porque o beijo é mais forte que a bala.
             </blockquote>
           </section>
           {/* Rabindranath Tagore */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Rabindranath Tagore</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.tagore}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Rabindranath Tagore</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               A fé é o pássaro que sente a luz e canta quando a aurora ainda está escura.
             </blockquote>
           </section>
           {/* Rainer Maria Rilke */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Rainer Maria Rilke</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.rilke}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Rainer Maria Rilke</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               Você deve viver em meio à vida com confiança, mesmo quando a vida parecer difícil. Não se apegue a sua dor ou a momentos difíceis, pois eles são apenas etapas de um caminho. O sofrimento é uma forma de ensinar, uma forma de forjar o caráter. Lembre-se, quando algo dói, é porque você está se tornando mais forte. O ser humano só cresce e evolui quando se depara com suas próprias limitações e ultrapassa-as. A solidão e a tristeza podem ser campos férteis para uma profundidade interior que será o seu maior bem.
             </blockquote>
           </section>
           {/* Hafez */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Hafez</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.hafez}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Hafez</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               No momento em que você se liberta da tristeza e da angústia, você se abre para a felicidade. Não há necessidade de procurar por ela fora de si. O que você busca já está dentro de você. Seu coração é o centro do universo, e é em seu coração que reside o amor. O amor não é algo que você possa encontrar, mas algo que você deve permitir fluir através de você. Lembre-se, você não é apenas o recipiente da felicidade, mas também a fonte dela. Quando você ama com todo o seu ser, tudo ao seu redor começa a brilhar.
             </blockquote>
           </section>
           {/* Antonio Machado */}
-          <section className="relative rounded-3xl shadow-xl px-6 py-8 border border-black/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-white/20 to-black/5 backdrop-blur-xl pointer-events-none" />
-            <h2 className="text-lg font-semibold text-black mb-2 relative z-10">Antonio Machado</h2>
-            <blockquote className="italic text-black leading-relaxed text-lg relative z-10">
+          <section
+            ref={refs.machado}
+            className="relative rounded-3xl shadow-2xl px-6 py-8 border border-[#3e1f0d]/30 bg-white/60 backdrop-blur-md overflow-hidden transition hover:scale-[1.02] hover:shadow-[0_4px_32px_8px_#a89060]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eecda3]/20 via-white/30 to-[#a89060]/20 pointer-events-none" />
+            <h2 className="text-lg font-semibold text-[#3e1f0d] mb-2 relative z-10">Antonio Machado</h2>
+            <blockquote className="italic text-[#3e1f0d] leading-relaxed text-lg relative z-10">
               Caminhante, são tuas pegadas o caminho, e nada mais; caminhante, não há caminho, se faz caminho ao andar. Ao andar, se faz caminho, e ao voltar, a vista atrás fica marcada por uma linha de sombras. Mas, ainda assim, os passos se seguem. O caminho se faz a cada passo dado, e o que importa não é onde chegamos, mas como caminhamos. Se cairmos, levantamo-nos; se errarmos, corrigimos. A vida se constrói pela continuidade da jornada, e não pelo destino final.
             </blockquote>
           </section>
@@ -138,7 +282,7 @@ export default function Poesias() {
         <div className="text-center mt-8">
           <a
             href="/"
-            className="inline-block px-6 py-3 text-[#170004] bg-[#ffe5ec] rounded-xl border border-[#f9d6c1]/40 hover:bg-[#f9d6c1] transition font-semibold"
+            className="inline-block px-6 py-3 text-[#170004] bg-gradient-to-r from-[#ffe5ec] via-[#f9d6c1] to-[#ffe5ec] rounded-xl border border-[#f9d6c1]/40 hover:bg-[#f9d6c1] transition font-semibold shadow-md"
           >
             Voltar para início
           </a>
