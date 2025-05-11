@@ -80,8 +80,7 @@ export default function Home() {
 <div className="w-full flex justify-center my-4">
   <a
     href="/respire"
-    className="bg-selah-button/90 text-black py-[1.25rem] px-[2rem] rounded-[1.25rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/70 hover:scale-105 transition flex items-center justify-center gap-[0.75rem] w-full sm:w-auto text-[1.25rem] font-semibold"
-    style={{ marginTop: "1.5rem" }}
+    className="bg-selah-button/90 text-selah-text py-[1rem] px-[1.5rem] rounded-[1rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/70 hover:scale-105 transition flex items-center justify-center gap-[0.75rem] w-full sm:w-auto text-[1.125rem] font-medium"
   >
     Apenas quero respirar
   </a>
@@ -176,8 +175,8 @@ export default function Home() {
                   M0,160 Q120,260 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160;
                   M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160
                 "
-            />
-          </path>
+          />
+        </path>
         </svg>
         <p className="text-[1.15rem] text-black text-selah-soft mt-[2.5rem] mb-[1.5rem]">
           Obrigada por nos escolher, desenvolvido por Leticia Eltermann <span className="heart">❤️</span>

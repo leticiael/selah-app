@@ -44,10 +44,21 @@ export default function RespirePage() {
 
   return (
     <main
-      className="min-h-screen flex flex-col items-center justify-center p-6 relative font-sans"
+      className="min-h-screen flex flex-col items-center justify-center p-6 relative font-sans overflow-x-hidden"
       style={{ fontFamily: "Inter, sans-serif" }}
     >
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#9fbacb] via-[#bcd6e6] to-[#7fa1b8]" />
+      {/* Gradiente de fundo melhorado */}
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#eaf6fb] via-[#cfe6f7] to-[#d4edea]" />
+      {/* Iluminação central suave */}
+      <div className="absolute inset-0 -z-10 pointer-events-none" style={{ background: "radial-gradient(circle at 55% 45%, #fff9 0%, #eae6fa77 40%, transparent 75%)" }} />
+      {/* Garça decorativa */}
+      <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
+        <img
+          src="/garca.png"
+          alt="Ilustração de garça"
+          className="max-h-[24rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl"
+        />
+      </div>
       <Toaster />
       {!sel ? (
         <>
@@ -102,9 +113,9 @@ export default function RespirePage() {
                 phase={phase}
                 animationDuration={animationDuration}
                 textColor="#3b5366"
-                glowColor="#bcd6e6"
-                shadowColor="#7fa1b8"
-                backgroundColor="rgba(255,255,255,0.6)"
+                glowColor="#cfe6f7"
+                shadowColor="#d4edea"
+                backgroundColor="rgba(255,255,255,0.7)"
               />
               <div className="text-xl text-[#3b5366] mb-6 text-center">
                 {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
