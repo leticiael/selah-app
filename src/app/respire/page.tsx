@@ -54,6 +54,7 @@ export default function RespirePage() {
             <p className="mb-4 text-base text-[#ffffff] font-medium">
               Use este espaço para respirar com calma, sem julgamentos ou perguntas. Escolha um tempo e siga seu ritmo.
             </p>
+            
             <div className="flex flex-col md:flex-row md:justify-center md:items-center gap-4 mb-4">
               {PROTOCOLS.map((p) => (
                 <button
@@ -66,6 +67,9 @@ export default function RespirePage() {
               ))}
             </div>
           </div>
+          <p className="italic text-sm text-[#ffffff]/70 mb-6">
+              A respiração lenta (inspire por 4 segundos, expire por 6 segundos) ajuda a acalmar o corpo e a mente.
+            </p>
           <div className="fixed bottom-0 left-0 w-full">
             <div className="w-full flex justify-center items-center p-4 bg-white/40 backdrop-blur-md">
               <a href="/" className="px-6 py-3 text-black rounded-xl border border-black/30 hover:bg-black/10 transition">
