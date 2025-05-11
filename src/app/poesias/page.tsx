@@ -30,15 +30,13 @@ const autores = [
 ];
 
 export default function Poesias() {
-  // Refs para cada autor
+  // refs para cada autor
   const refs = Object.fromEntries(
     autores.map(({ key }) => [key, useRef<HTMLDivElement>(null)])
   ) as RefsType;
 
-  // Estado do menu hamburguer
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Impede o scroll do body quando o menu está aberto
   useEffect(() => {
     if (menuOpen) {
       document.body.classList.add("overflow-hidden");
@@ -48,7 +46,7 @@ export default function Poesias() {
     return () => document.body.classList.remove("overflow-hidden");
   }, [menuOpen]);
 
-  // Função para scroll suave até o autor e fechar menu
+  // scroll suave até o autor e fechar menu
   const scrollTo = (ref: RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     setMenuOpen(false);
@@ -59,7 +57,7 @@ export default function Poesias() {
       className="relative min-h-screen w-full flex flex-col items-center justify-center"
       style={{ backgroundColor: "#8C6849" }}
     >
-      {/* Botão flutuante para voltar (só aparece se o menu NÃO está aberto) */}
+      {/* botão flutuante para voltar */}
       {!menuOpen && (
         <a
           href="/"
@@ -68,27 +66,25 @@ export default function Poesias() {
           aria-label="Voltar para início"
         >
           <span>Início</span>
-          {/* Setinha para esquerda */}
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
             <path d="M14 6l-4 5 4 5" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </a>
       )}
-      {/* Botão hamburguer (bolinha de luz com ícone, só aparece se o menu NÃO está aberto) */}
+      {/* botão hamburguer */}
       {!menuOpen && (
         <button
           className="fixed top-6 left-6 z-50 w-10 h-10 rounded-full bg-gradient-to-br from-[#ffe5ec] via-[#eecda3] to-[#a89060] shadow-lg flex items-center justify-center animate-pulse border-2 border-[#eecda3] transition"
           aria-label="Abrir menu de autores"
           onClick={() => setMenuOpen(true)}
         >
-          {/* Ícone de menu (hamburger) */}
           <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
             <rect x="5" y="8" width="16" height="2.5" rx="1.2" fill="#a89060"/>
             <rect x="5" y="13" width="16" height="2.5" rx="1.2" fill="#a89060"/>
           </svg>
         </button>
       )}
-      {/* Menu de autores (hamburguer) */}
+      {/* menu de autores */}
       {menuOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-[#8c6849cc] backdrop-blur-sm z-50 flex flex-col items-center justify-center overflow-auto max-h-screen">
           <button
@@ -96,13 +92,11 @@ export default function Poesias() {
             aria-label="Fechar menu"
             onClick={() => setMenuOpen(false)}
           >
-            {/* Ícone de fechar (X) */}
             <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
               <line x1="6" y1="6" x2="16" y2="16" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round"/>
               <line x1="16" y1="6" x2="6" y2="16" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </button>
-          {/* O menu agora tem um padding-top para não cobrir o título no mobile */}
           <nav className="flex flex-col gap-4 mt-10 pt-32 sm:pt-10 w-full items-center">
             {autores.map(({ key, label }) => (
               <button
@@ -116,7 +110,6 @@ export default function Poesias() {
           </nav>
         </div>
       )}
-      {/* Conteúdo das poesias */}
       <div className="max-w-2xl mx-auto px-4 sm:px-8 py-8 sm:py-12 space-y-10 relative z-10">
         <h1 className="text-4xl font-extrabold text-[#3e1f0d] mb-10 tracking-tight text-center drop-shadow-lg">
           Poesias para Respirar

@@ -17,6 +17,7 @@ function LeafIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 const PROTOCOLS: Protocol[] = [
+  { label: "1 minuto", duration: 1 * 60, inhale: 4, hold: 7, exhale: 8 },
   { label: "5 minutos", duration: 5 * 60, inhale: 4, hold: 7, exhale: 8 },
   { label: "15 minutos", duration: 15 * 60, inhale: 4, hold: 7, exhale: 8 },
   { label: "20 minutos", duration: 20 * 60, inhale: 4, hold: 7, exhale: 8 },
@@ -27,7 +28,7 @@ export default function PanicoPage() {
   const { timeLeft, phase } = useBreathingProtocol(sel);
   const [completed, setCompleted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [entry, setEntry] = useState("");
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
 
   const animationDuration = sel ? sel[phase] : 1;
 
@@ -40,17 +41,17 @@ export default function PanicoPage() {
     }
   }, [timeLeft, sel, hasStarted]);
 
-  const handleSave = () => {
-    const history = JSON.parse(localStorage.getItem("journal") || "[]");
+  function handleFeedback(type: "up" | "down") {
+    setFeedback(type);
+    const history = JSON.parse(localStorage.getItem("feedback") || "[]");
     const newEntry = {
       date: new Date().toISOString(),
       emotion: sel?.label ?? "Respiração",
-      content: entry,
+      feedback: type,
     };
-    localStorage.setItem("journal", JSON.stringify([newEntry, ...history]));
-    setEntry("");
-    toast.success("Reflexão salva com sucesso 🌿", {
-      duration: 2000,
+    localStorage.setItem("feedback", JSON.stringify([newEntry, ...history]));
+    toast.success("Feedback registrado!", {
+      duration: 1500,
       position: "top-center",
       style: {
         background: "rgba(255, 255, 255, 0.9)",
@@ -62,11 +63,12 @@ export default function PanicoPage() {
       setSel(null);
       setCompleted(false);
       setHasStarted(false);
-    }, 2000);
-  };
+      setFeedback(null);
+    }, type === "down" ? 5000 : 2000);
+  }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#1e293b] via-[#2563eb] to-[#60a5fa] flex flex-col items-center justify-center p-6 relative">
+    <main className="min-h-screen bg-gradient-to-br from-[#1e293b] via-[#2563eb] to-[#60a5fa] flex flex-col items-center justify-center p-6 relative font-sans" style={{ fontFamily: "Inter, sans-serif" }}>
       <Toaster />
       {!sel && (
         <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
@@ -171,7 +173,7 @@ export default function PanicoPage() {
                     setSel(null);
                     setCompleted(false);
                     setHasStarted(false);
-                    setEntry("");
+                    setFeedback(null);
                   }}
                   aria-label="Voltar para escolha de tempo"
                   className="flex items-center justify-center w-14 h-14 rounded-full bg-white/10 border border-blue-200/20 text-blue-100 hover:bg-white/20 transition shadow-lg"
@@ -191,30 +193,44 @@ export default function PanicoPage() {
             </>
           ) : (
             <>
-              <div className="z-10 w-full max-w-xl px-4 transition-all duration-500 ease-in-out opacity-100 transform translate-y-0">
-                <h2 className="text-2xl font-semibold text-blue-100 mb-4">Como você se sente agora?</h2>
-                <textarea
-                  value={entry}
-                  onChange={(e) => setEntry(e.target.value)}
-                  className="w-full h-40 rounded-xl bg-white/10 text-blue-100 p-4 outline-none border border-blue-400/30"
-                  placeholder="Escreva livremente, sem julgamento..."
-                />
-                <div className="flex justify-center w-full">
-                  <button
-                    onClick={handleSave}
-                    className="mt-4 px-6 py-3 bg-white/10 text-blue-100 rounded-xl border border-blue-400/30 hover:bg-white/20 transition"
-                  >
-                    Salvar reflexão
-                  </button>
+              {!feedback && (
+                <div className="flex flex-col items-center gap-4 mt-8">
+                  <h2 className="text-2xl font-semibold text-blue-100 mb-4">Como você se sente agora?</h2>
+                  <div className="flex gap-8">
+                    <button
+                      onClick={() => handleFeedback("up")}
+                      className="w-20 h-20 flex items-center justify-center rounded-full bg-white/80 hover:bg-blue-200 transition shadow-lg text-blue-900 text-4xl"
+                      aria-label="Gostei"
+                    >
+                      👍
+                    </button>
+                    <button
+                      onClick={() => handleFeedback("down")}
+                      className="w-20 h-20 flex items-center justify-center rounded-full bg-white/80 hover:bg-red-200 transition shadow-lg text-red-700 text-4xl"
+                      aria-label="Não gostei"
+                    >
+                      👎
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
+              {feedback === "up" && (
+                <p className="text-blue-200 text-xl mt-8 text-center">
+                  Que bom que ajudou! Volte sempre que precisar 💙
+                </p>
+              )}
+              {feedback === "down" && (
+                <p className="text-red-200 text-xl mt-8 text-center">
+                  Sinto muito que não tenha te ajudado como você esperava. Se estiver difícil, procure apoio — você merece cuidado e não está sozinho. Ligue 188 (CVV) ou fale com alguém de confiança. 💛
+                </p>
+              )}
               <div className="flex justify-center mt-8 mb-4">
                 <button
                   onClick={() => {
                     setSel(null);
                     setCompleted(false);
                     setHasStarted(false);
-                    setEntry("");
+                    setFeedback(null);
                   }}
                   aria-label="Encerrar sessão"
                   className="flex items-center justify-center w-14 h-14 rounded-full bg-white/10 border border-blue-200/20 text-blue-100 hover:bg-white/20 transition shadow-lg"

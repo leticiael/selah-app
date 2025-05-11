@@ -4,25 +4,11 @@ import { useState } from "react";
 export default function Sobre() {
   const [zoom, setZoom] = useState(false);
 
-  function handleBack() {
-    if (typeof window !== "undefined") window.history.back();
-  }
-
   return (
     <main
       className="relative min-h-screen w-full flex flex-col items-center justify-center font-sans"
       style={{ backgroundColor: "#9B7D61" }}
     >
-      <button
-        onClick={handleBack}
-        className="fixed top-6 left-6 z-50 w-12 h-12 rounded-full bg-white/80 shadow-lg flex items-center justify-center border border-[#a9446a]/30 hover:bg-[#ffe5ec] transition"
-        aria-label="Voltar"
-        style={{ color: "#3e1f0d" }}
-      >
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M17.5 21L11 14L17.5 7" stroke="#3e1f0d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
       <div
         className="pointer-events-none fixed inset-0 z-0"
         aria-hidden="true"
@@ -34,21 +20,21 @@ export default function Sobre() {
       />
       <div className="max-w-2xl mx-auto px-4 sm:px-8 py-10 sm:py-16 space-y-8 relative z-10">
         <section className="rounded-3xl shadow-xl px-6 py-8 border border-[#a9446a]/20 bg-white/10 backdrop-blur-md flex flex-col items-center hover:bg-white/20 transition">
-         <div className="overflow-hidden rounded-3xl mb-6" style={{ width: 160 }}>
-  <img
-    src="/coffeme.png"
-    alt="Leticia Eltermann"
-    className={`w-40 h-auto max-w-full transition-transform duration-500 ${zoom ? "scale-110" : "scale-100"}`}
-    style={{
-      objectFit: "contain",
-      transition: "transform 0.5s cubic-bezier(.4,1.6,.4,1)",
-      willChange: "transform",
-    }}
-    onMouseEnter={() => setZoom(true)}
-    onMouseLeave={() => setZoom(false)}
-    loading="lazy"
-  />
-</div>
+          <div className="overflow-hidden rounded-3xl mb-6" style={{ width: 160 }}>
+            <img
+              src="/coffeme.png"
+              alt="Leticia Eltermann"
+              className={`w-40 h-auto max-w-full transition-transform duration-500 ${zoom ? "scale-110" : "scale-100"}`}
+              style={{
+                objectFit: "contain",
+                transition: "transform 0.5s cubic-bezier(.4,1.6,.4,1)",
+                willChange: "transform",
+              }}
+              onMouseEnter={() => setZoom(true)}
+              onMouseLeave={() => setZoom(false)}
+              loading="lazy"
+            />
+          </div>
           <h2 className="text-lg font-bold text-black mb-1 tracking-tight">Leticia Eltermann</h2>
           <p className="text-sm text-[#ffe5ec] mb-2 text-center leading-relaxed">
             Desenvolvedora apaixonada por tecnologia, literatura, meditação e videogames.<br />
@@ -64,15 +50,16 @@ export default function Sobre() {
           </p>
         </section>
 
-<section className="rounded-3xl shadow-xl px-6 py-6 border border-[#a9446a]/20 bg-white/10 backdrop-blur-md text-center hover:bg-white/20 transition">
-  <h1 className="text-xl font-bold text-black mb-2 tracking-tight">Selah: Um Respiro para Você</h1>
-  <p className="text-base mb-2 leading-relaxed text-neutral-800">
-    Selah é uma palavra antiga, encontrada em textos poéticos, que marca o momento de uma pausa — um convite para respirar, refletir e seguir em frente com mais leveza. Para mim, esse significado ganhou ainda mais força depois de viver muitas crises de saúde mental e momentos em que tudo parecia pesado demais.
-  </p>
-  <p className="text-base text-neutral-700">
-    Por isso, criei o Selah: para ser um espaço de acolhimento real, feito para quem precisa de um respiro nos dias difíceis. Aqui você encontra ferramentas, mensagens e cores pensadas para te ajudar a atravessar a tempestade. Você não está só. Pausar é necessário, e pedir ajuda é um ato de coragem.
-  </p>
-</section>
+        <section className="rounded-3xl shadow-xl px-6 py-6 border border-[#a9446a]/20 bg-white/10 backdrop-blur-md text-center hover:bg-white/20 transition">
+          <h1 className="text-xl font-bold text-black mb-2 tracking-tight">Selah: Um Respiro para Você</h1>
+          <p className="text-base mb-2 leading-relaxed text-neutral-800">
+            Selah é uma palavra antiga usada em textos poéticos para indicar uma pausa — um convite para respirar, refletir e seguir em frente com mais leveza. Para mim, esse significado ganhou ainda mais força depois de viver muitas crises de saúde mental e momentos em que tudo parecia pesado demais.
+          </p>
+          <p className="text-base text-neutral-700">
+            Por isso, criei o Selah: para ser um espaço de acolhimento real, feito para quem precisa de um respiro nos dias difíceis. Aqui você encontra ferramentas, mensagens e cores pensadas para te ajudar a atravessar a tempestade. Você não está só. Pausar é necessário, e pedir ajuda é um ato de coragem.
+          </p>
+        </section>
+
         <section className="rounded-3xl shadow-xl px-6 py-6 border border-[#a9446a]/20 bg-white/10 backdrop-blur-md hover:bg-white/20 transition">
           <h2 className="text-base font-bold text-black mb-2">O que você encontra aqui</h2>
           <ul className="list-disc list-inside space-y-1 text-[#f9d6c1] text-sm pl-2">
@@ -201,6 +188,18 @@ export default function Sobre() {
           </p>
         </div>
       </div>
+
+<a
+  href="/"
+  className="fixed bottom-6 right-6 z-50 px-5 py-3 bg-gradient-to-r from-[#fff2f6] via-[#fbe9dc] to-[#fff2f6] text-[#170004] rounded-full shadow-2xl border border-[#00000]/60 hover:bg-[#fbe9dc] transition font-bold tracking-wide backdrop-blur-md bg-opacity-60 flex items-center gap-2"
+  style={{ opacity: 0.7, letterSpacing: "0.05em", background: "rgba(255,255,255,0.25)" }}
+  aria-label="Voltar para início"
+>
+  <span>Início</span>
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+    <path d="M14 6l-4 5 4 5" stroke="#a89060" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+</a>
       <style>{`
         .scale-100 { transform: scale(1); }
         .scale-110 { transform: scale(1.10); }
