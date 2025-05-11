@@ -77,6 +77,15 @@ export default function Home() {
               </a>
             ))}
           </div>
+<div className="w-full flex justify-center my-4">
+  <a
+    href="/respire"
+    className="bg-selah-button/90 text-black py-[1.25rem] px-[2rem] rounded-[1.25rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/70 hover:scale-105 transition flex items-center justify-center gap-[0.75rem] w-full sm:w-auto text-[1.25rem] font-semibold"
+    style={{ marginTop: "1.5rem" }}
+  >
+    Apenas quero respirar
+  </a>
+</div>
           <p className="text-[1rem] italic relative text-selah-soft">
             (Não se preocupe muito com isso, todas foram pensadas para te ajudar.)
           </p>
