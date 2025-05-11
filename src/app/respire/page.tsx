@@ -66,6 +66,13 @@ export default function RespirePage() {
               ))}
             </div>
           </div>
+          <div className="fixed bottom-0 left-0 w-full">
+            <div className="w-full flex justify-center items-center p-4 bg-white/40 backdrop-blur-md">
+              <a href="/" className="px-6 py-3 text-black rounded-xl border border-black/30 hover:bg-black/10 transition">
+                Voltar para início
+              </a>
+            </div>
+          </div>
         </>
       ) : (
         <>
