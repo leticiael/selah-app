@@ -39,7 +39,7 @@ export default function PanicoPage() {
   const [hasStarted, setHasStarted] = useState(false);
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
 
-  const animationDuration = sel ? sel[phase] : 1;
+  const animationDuration: number = sel && sel[phase] ? sel[phase] : 1;
 
   const { isZenMode, toggleZenMode } = useContext(ZenModeContext);
 
