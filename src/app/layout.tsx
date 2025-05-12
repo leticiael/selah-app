@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { ZenModeProvider } from "@/components/ZenModeProvider";
+import SmoothScroll from "@/components/smoothScroll";
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <body
           className={`${playfairDisplay.variable} ${inter.variable} antialiased font-sans`}
         >
+          <SmoothScroll />
           {children}
         </body>
       </html>
