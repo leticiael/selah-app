@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import { ZenModeProvider } from "@/components/ZenModeProvider";
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -23,12 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body
-        className={`${playfairDisplay.variable} ${inter.variable} antialiased font-sans`}
-      >
-        {children}
-      </body>
-    </html>
+    <ZenModeProvider>
+      <html lang="pt-BR">
+        <body
+          className={`${playfairDisplay.variable} ${inter.variable} antialiased font-sans`}
+        >
+          {children}
+        </body>
+      </html>
+    </ZenModeProvider>
   );
 }
