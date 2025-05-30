@@ -4,6 +4,7 @@ import { useBreathingProtocol, Protocol } from "@/hooks/useBreathingProtocol";
 import BreathingBall from "@/components/BreathingBall";
 import { Toaster } from "react-hot-toast";
 import { ZenModeContext } from "@/components/ZenModeProvider";
+import FeedbackButtons from "@/components/FeedbackButtons";
 
 const PROTOCOLS: Protocol[] = [
   { label: "1 minuto", duration: 1 * 60, inhale: 4, exhale: 6 },
@@ -131,11 +132,45 @@ export default function RespirePage() {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-4 mt-8">
-              <p className="text-[#ffffff] text-xl mt-8 text-center">
-                Respiração concluída. Volte sempre que quiser um momento de
-                pausa.
-              </p>
+            <div className={`text-center ${isZenMode ? "hidden" : ""}`}>
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-[#ffffff] mb-4">
+                  ✨ Parabéns!
+                </h2>
+                <p className="text-[#ffffff] text-lg mb-6">
+                  Você completou sua sessão de respiração consciente.
+                </p>
+              </div>
+
+              <div className="mb-8">
+                <FeedbackButtons 
+                  context="breathing-exercise"
+                  title="Como foi seu exercício de respiração?"
+                />
+              </div>
+
+              <div className="flex justify-center">
+                <button
+                  onClick={resetAll}
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 border border-white/20 text-[#ffffff] hover:bg-white/20 transition shadow-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  Fazer outro exercício
+                </button>
+              </div>
             </div>
           )}
         </>

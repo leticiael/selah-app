@@ -10,7 +10,7 @@ export const ZenModeProvider = ({ children }: { children: ReactNode }) => {
   const [isZenMode, setIsZenMode] = useState(false);
 
   const toggleZenMode = () => {
-    setIsZenMode((prev) => !prev); // Alterna o estado de Zen Mode
+    setIsZenMode((prev) => !prev); 
   };
 
   return (

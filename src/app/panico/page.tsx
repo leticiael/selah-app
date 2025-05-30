@@ -5,6 +5,7 @@ import { Protocol, useBreathingProtocol } from "@/hooks/useBreathingProtocol";
 import BreathingBall from "@/components/BreathingBall";
 import { Toaster, toast } from "react-hot-toast";
 import { ZenModeContext } from "@/components/ZenModeProvider";
+import FeedbackButtons from "@/components/FeedbackButtons";
 
 function LeafIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -37,7 +38,6 @@ export default function PanicoPage() {
   const { timeLeft, phase } = useBreathingProtocol(sel);
   const [completed, setCompleted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
 
   const animationDuration: number = sel && sel[phase] ? sel[phase] : 1;
 
@@ -51,35 +51,6 @@ export default function PanicoPage() {
       setCompleted(true);
     }
   }, [timeLeft, sel, hasStarted]);
-
-  function handleFeedback(type: "up" | "down") {
-    setFeedback(type);
-    const history = JSON.parse(localStorage.getItem("feedback") || "[]");
-    const newEntry = {
-      date: new Date().toISOString(),
-      emotion: sel?.label ?? "Respiração",
-      feedback: type,
-    };
-    localStorage.setItem("feedback", JSON.stringify([newEntry, ...history]));
-    toast.success("Feedback registrado!", {
-      duration: 1500,
-      position: "top-center",
-      style: {
-        background: "rgba(255, 255, 255, 0.9)",
-        color: "#2563eb",
-        fontWeight: "500",
-      },
-    });
-    setTimeout(
-      () => {
-        setSel(null);
-        setCompleted(false);
-        setHasStarted(false);
-        setFeedback(null);
-      },
-      type === "down" ? 5000 : 2000
-    );
-  }
 
   return (
     <main
@@ -184,36 +155,50 @@ export default function PanicoPage() {
               )}
             </div>
           ) : (
-            <div
-              className={`flex justify-center mt-8 mb-4 ${
-                isZenMode ? "hidden" : ""
-              }`}
-            >
-              <button
-                onClick={() => {
-                  setSel(null);
-                  setCompleted(false);
-                  setHasStarted(false);
-                  setFeedback(null);
-                }}
-                aria-label="Voltar para escolha de tempo"
-                className="flex items-center justify-center w-14 h-14 rounded-full bg-white/10 border border-blue-200/20 text-blue-100 hover:bg-white/20 transition shadow-lg"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-7 h-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
+            <div className={`text-center ${isZenMode ? "hidden" : ""}`}>
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-blue-100 mb-4">
+                  ✨ Parabéns!
+                </h2>
+                <p className="text-blue-200 text-lg mb-6">
+                  Você completou sua sessão de respiração para ansiedade.
+                </p>
+              </div>
+
+              <div className="mb-8">
+                <FeedbackButtons 
+                  context="panic-relief"
+                  title="Este exercício te ajudou com a ansiedade?"
+                />
+              </div>
+
+              <div className="flex justify-center">
+                <button
+                  onClick={() => {
+                    setSel(null);
+                    setCompleted(false);
+                    setHasStarted(false);
+                  }}
+                  aria-label="Voltar para escolha de tempo"
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 border border-blue-200/20 text-blue-100 hover:bg-white/20 transition shadow-lg"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  Fazer outro exercício
+                </button>
+              </div>
             </div>
           )}
         </>

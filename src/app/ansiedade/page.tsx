@@ -4,6 +4,7 @@ import { useBreathingProtocol, Protocol } from "@/hooks/useBreathingProtocol";
 import BreathingBall from "@/components/BreathingBall";
 import { Toaster, toast } from "react-hot-toast";
 import { ZenModeContext } from "@/components/ZenModeProvider";
+import FeedbackButtons from "@/components/FeedbackButtons";
 
 function WindIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -50,37 +51,6 @@ export default function AnsiedadePage() {
       setCompleted(true);
     }
   }, [timeLeft, sel, hasStarted]);
-
-  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
-
-  function handleFeedback(type: "up" | "down") {
-    setFeedback(type);
-    const history = JSON.parse(localStorage.getItem("feedback") || "[]");
-    const newEntry = {
-      date: new Date().toISOString(),
-      emotion: sel?.label ?? "Respiração",
-      feedback: type,
-    };
-    localStorage.setItem("feedback", JSON.stringify([newEntry, ...history]));
-    toast.success("Feedback registrado!", {
-      duration: 1500,
-      position: "top-center",
-      style: {
-        background: "rgba(255, 255, 255, 0.9)",
-        color: "#064e3b",
-        fontWeight: "500",
-      },
-    });
-    setTimeout(
-      () => {
-        setSel(null);
-        setCompleted(false);
-        setHasStarted(false);
-        setFeedback(null);
-      },
-      type === "down" ? 5000 : 2000
-    );
-  }
 
   return (
     <main
@@ -129,12 +99,7 @@ export default function AnsiedadePage() {
             {PROTOCOLS.map((p) => (
               <button
                 key={p.label}
-                onClick={() => {
-                  setSel(p);
-                  setCompleted(false);
-                  setHasStarted(false);
-                  setFeedback(null);
-                }}
+                onClick={() => setSel(p)}
                 className="px-4 py-2 bg-white/70 text-green-900 rounded-xl hover:bg-white transition font-semibold w-full md:w-auto"
               >
                 {p.label}
@@ -178,36 +143,50 @@ export default function AnsiedadePage() {
               )}
             </div>
           ) : (
-            <div
-              className={`flex justify-center mt-8 mb-4 ${
-                isZenMode ? "hidden" : ""
-              }`}
-            >
-              <button
-                onClick={() => {
-                  setSel(null);
-                  setCompleted(false);
-                  setHasStarted(false);
-                  setFeedback(null);
-                }}
-                aria-label="Voltar para escolha de tempo"
-                className="flex items-center justify-center w-14 h-14 rounded-full bg-white/80 border border-green-900/20 text-green-900 hover:bg-green-200 transition shadow-lg"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-7 h-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
+            <div className={`text-center ${isZenMode ? "hidden" : ""}`}>
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-green-100 mb-4">
+                  ✨ Parabéns!
+                </h2>
+                <p className="text-green-100 text-lg mb-6">
+                  Você completou sua sessão de respiração para ansiedade.
+                </p>
+              </div>
+
+              <div className="mb-8">
+                <FeedbackButtons 
+                  context="anxiety-relief"
+                  title="Este exercício te ajudou com a ansiedade?"
+                />
+              </div>
+
+              <div className="flex justify-center">
+                <button
+                  onClick={() => {
+                    setSel(null);
+                    setCompleted(false);
+                    setHasStarted(false);
+                  }}
+                  aria-label="Voltar para escolha de tempo"
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/80 border border-green-900/20 text-green-900 hover:bg-green-200 transition shadow-lg"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  Fazer outro exercício
+                </button>
+              </div>
             </div>
           )}
         </>
