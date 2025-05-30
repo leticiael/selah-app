@@ -1,35 +1,54 @@
 import { Redis } from '@upstash/redis';
-import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 const redis = new Redis({
   url: process.env.KV_REST_API_URL!,
   token: process.env.KV_REST_API_TOKEN!,
 });
 
-export async function POST(request: Request) {
+const ADMIN_PASSWORD = 'selah2024';
+
+export async function GET(request: NextRequest) {
+  const url = new URL(request.url);
+  const senha = url.searchParams.get('senha');
+  
+  if (senha !== ADMIN_PASSWORD) {
+    return Response.json({ error: 'Acesso negado' }, { status: 401 });
+  }
+
   try {
-    const { rating } = await request.json();
+    const positivos = await redis.get("feedback:positivos");
+    const negativos = await redis.get("feedback:negativos");
     
-    // Salva +1 no contador
-    await redis.incr(`feedback:${rating}`);
+    // Corrigir conversão de null para 0
+    const positivosNum = positivos ? Number(positivos) : 0;
+    const negativosNum = negativos ? Number(negativos) : 0;
     
-    return NextResponse.json({ success: true });
+    return Response.json({
+      positivos: positivosNum,
+      negativos: negativosNum,
+      total: positivosNum + negativosNum
+    });
   } catch (error) {
-    return NextResponse.json({ error: 'Erro' }, { status: 500 });
+    console.error('Erro ao buscar dados:', error);
+    return Response.json({ error: 'Erro interno' }, { status: 500 });
   }
 }
 
-export async function GET() {
+export async function POST(request: NextRequest) {
   try {
-    const positivos = await redis.get('feedback:up') || 0;
-    const negativos = await redis.get('feedback:down') || 0;
+    const { rating, sessionId, context } = await request.json();
     
-    return NextResponse.json({
-      positivos: Number(positivos),
-      negativos: Number(negativos),
-      total: Number(positivos) + Number(negativos)
-    });
+    if (!rating || !sessionId) {
+      return Response.json({ error: 'Dados inválidos' }, { status: 400 });
+    }
+
+    const key = rating === "up" ? "feedback:positivos" : "feedback:negativos";
+    await redis.incr(key);
+    
+    return Response.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Erro' }, { status: 500 });
+    console.error('Erro ao salvar feedback:', error);
+    return Response.json({ error: 'Erro interno' }, { status: 500 });
   }
 }

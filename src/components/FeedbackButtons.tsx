@@ -58,33 +58,14 @@ export default function FeedbackButtons({
         </div>
         <div className="text-center">
           <h3 className="text-lg font-semibold text-blue-100 mb-2">
-            {feedback === 'up' ? 'Que bom que você gostou!' : 'Você não está sozinho(a)'}
+            {feedback === 'up' ? 'Que bom que você gostou!' : 'Obrigado pelo feedback!'}
           </h3>
-          <p className="text-blue-200 text-sm max-w-md mb-4">
+          <p className="text-blue-200 text-sm max-w-md">
             {feedback === 'up' 
               ? 'Continue praticando! A respiração traz muitos benefícios.' 
-              : 'Sabemos que às vezes os exercícios podem não funcionar como esperado. Isso é normal e faz parte do processo de aprendizado.'
+              : 'Seu feedback nos ajuda a melhorar o Selah.'
             }
           </p>
-          
-          {feedback === 'down' && (
-            <div className="bg-white/10 p-4 rounded-lg border border-blue-200/20 max-w-md">
-              <p className="text-blue-100 text-sm mb-3 font-medium">
-                🫂 Se você está passando por um momento difícil:
-              </p>
-              <div className="text-blue-200 text-sm space-y-2">
-                <p>
-                  <strong>CVV:</strong> <span className="font-mono text-blue-100">188</span>
-                </p>
-                <p className="text-xs">
-                  Centro de Valorização da Vida - Apoio emocional 24h gratuito
-                </p>
-                <p className="text-xs">
-                  Ligue sempre que precisar conversar. Você é importante! 💙
-                </p>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     );
