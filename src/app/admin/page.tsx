@@ -1,10 +1,17 @@
 'use client';
 import { useState, useEffect } from 'react';
 
+// Definir o tipo dos dados
+interface DadosFeedback {
+  positivos: number;
+  negativos: number;
+  total: number;
+}
+
 export default function AdminPage() {
   const [logado, setLogado] = useState(false);
   const [senha, setSenha] = useState('');
-  const [dados, setDados] = useState(null);
+  const [dados, setDados] = useState<DadosFeedback | null>(null);
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
 
