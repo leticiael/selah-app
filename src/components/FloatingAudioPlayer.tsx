@@ -256,31 +256,31 @@ export default function FloatingAudioPlayer() {
           className="fixed inset-1 z-50 bg-black/30 backdrop-blur-2xl border border-white/5 shadow-2xl rounded-xl flex flex-col xs:inset-2 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[85%] sm:max-w-lg sm:h-auto sm:rounded-2xl md:max-w-xl lg:max-w-2xl"
         >
           {/* Header minimalista */}
-          <div className="flex justify-between items-center p-3 sm:p-4 border-b border-white/5 flex-shrink-0">
-            <h2 className="text-sm sm:text-base font-light text-white/90 tracking-wider">Sons</h2>
+          <div className="flex justify-between items-center p-4 sm:p-5 border-b border-white/5 flex-shrink-0">
+            <h2 className="text-base sm:text-lg font-light text-white/90 tracking-wider">Sons</h2>
             <button
-              className="p-1.5 hover:bg-white/5 rounded-lg text-white/40 hover:text-white/80 transition-all"
+              className="p-3 hover:bg-white/10 rounded-xl text-white/40 hover:text-white/80 transition-all touch-manipulation"
               onClick={() => updateGlobalState({ expanded: false })}
             >
-              <RiCloseFill size={16} />
+              <RiCloseFill size={20} />
             </button>
           </div>
 
           {/* Conteúdo com scroll otimizado */}
           <div className="flex-1 overflow-y-auto">
-            <div className="p-2 sm:p-3 space-y-3 sm:space-y-4">
+            <div className="p-3 sm:p-4 space-y-4 sm:space-y-5">
               {soundCategories.map((category, categoryIndex) => {
                 const CategoryIcon = category.icon;
                 return (
-                  <div key={categoryIndex} className="space-y-2">
+                  <div key={categoryIndex} className="space-y-3">
                     {/* Header categoria minimalista */}
-                    <div className="flex items-center gap-2 text-white/50 sticky top-0 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-md">
-                      <CategoryIcon size={14} />
-                      <h3 className="text-xs font-light tracking-wide uppercase">{category.name}</h3>
+                    <div className="flex items-center gap-3 text-white/60 sticky top-0 bg-black/50 backdrop-blur-md px-3 py-2 rounded-lg">
+                      <CategoryIcon size={16} />
+                      <h3 className="text-sm font-medium tracking-wide uppercase">{category.name}</h3>
                     </div>
                     
-                    {/* Grid ultra responsivo */}
-                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                    {/* Grid ultra responsivo com botões maiores */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {category.tracks.map((track, trackIndex) => {
                         const globalTrackIndex = soundCategories
                           .slice(0, categoryIndex)
@@ -293,16 +293,16 @@ export default function FloatingAudioPlayer() {
                           <button
                             key={trackIndex}
                             onClick={() => selectTrack(globalTrackIndex)}
-                            className={`p-3 rounded-lg text-xs font-light flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] border text-left min-h-[44px] ${
+                            className={`p-4 sm:p-5 rounded-xl text-sm font-light flex items-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98] border text-left min-h-[64px] sm:min-h-[72px] touch-manipulation ${
                               isActive
-                                ? "bg-white/15 text-white border-white/20 shadow-lg"
-                                : "bg-white/5 text-white/70 hover:bg-white/10 border-white/5 hover:text-white/90"
+                                ? "bg-white/20 text-white border-white/25 shadow-lg"
+                                : "bg-white/8 text-white/80 hover:bg-white/15 border-white/8 hover:text-white active:bg-white/20"
                             }`}
                           >
-                            <IconComponent size={16} className="flex-shrink-0 opacity-70" />
-                            <span className="text-xs truncate flex-1 tracking-wide">{track.label}</span>
+                            <IconComponent size={20} className="flex-shrink-0 opacity-80" />
+                            <span className="text-sm sm:text-base truncate flex-1 tracking-wide font-medium">{track.label}</span>
                             {isActive && globalState.playing && (
-                              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse flex-shrink-0" />
+                              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse flex-shrink-0" />
                             )}
                           </button>
                         );
@@ -313,8 +313,8 @@ export default function FloatingAudioPlayer() {
               })}
             </div>
             
-            {/* Espaço final minimalista */}
-            <div className="h-4" />
+            {/* Espaço final para scroll */}
+            <div className="h-6" />
           </div>
         </div>
       )}
@@ -336,14 +336,14 @@ export default function FloatingAudioPlayer() {
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => updateGlobalState({ expanded: true })}
-                  className="text-white text-sm font-light flex items-center gap-3 hover:text-emerald-300 transition-colors flex-1 min-w-0"
+                  className="text-white text-sm font-light flex items-center gap-3 hover:text-emerald-300 transition-colors flex-1 min-w-0 touch-manipulation"
                 >
                   <RiMusicFill size={16} className="flex-shrink-0" />
                   <span className="truncate">{currentTrack.label}</span>
                 </button>
                 <button
                   onClick={() => updateGlobalState({ open: false })}
-                  className="text-white/60 hover:text-white transition-colors p-1 ml-2 flex-shrink-0"
+                  className="text-white/60 hover:text-white transition-colors p-2 ml-2 flex-shrink-0 touch-manipulation"
                 >
                   <RiCloseFill size={16} />
                 </button>
@@ -352,20 +352,20 @@ export default function FloatingAudioPlayer() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={playPause}
-                  className="w-10 h-10 rounded-2xl bg-white/20 text-white hover:bg-white/30 transition-all backdrop-blur-sm flex items-center justify-center border border-white/10"
+                  className="w-12 h-12 rounded-2xl bg-white/20 text-white hover:bg-white/30 transition-all backdrop-blur-sm flex items-center justify-center border border-white/10 touch-manipulation"
                 >
-                  {globalState.playing ? <RiPauseFill size={16} /> : <RiPlayFill size={16} />}
+                  {globalState.playing ? <RiPauseFill size={18} /> : <RiPlayFill size={18} />}
                 </button>
                 
                 <button
                   onClick={next}
-                  className="w-10 h-10 rounded-2xl bg-white/10 text-white/80 hover:bg-white/20 hover:text-white transition-all backdrop-blur-sm flex items-center justify-center border border-white/10"
+                  className="w-12 h-12 rounded-2xl bg-white/10 text-white/80 hover:bg-white/20 hover:text-white transition-all backdrop-blur-sm flex items-center justify-center border border-white/10 touch-manipulation"
                 >
-                  <RiSkipForwardFill size={16} />
+                  <RiSkipForwardFill size={18} />
                 </button>
                 
                 <div className="flex items-center gap-2 flex-1">
-                  <RiVolumeUpFill className="text-white/60" size={14} />
+                  <RiVolumeUpFill className="text-white/60" size={16} />
                   <input
                     type="range"
                     min={0}
@@ -373,7 +373,7 @@ export default function FloatingAudioPlayer() {
                     step={0.01}
                     value={globalState.volume}
                     onChange={(e) => updateGlobalState({ volume: parseFloat(e.target.value) })}
-                    className="flex-1 h-2 bg-white/20 rounded-full appearance-none slider backdrop-blur-sm"
+                    className="flex-1 h-3 bg-white/20 rounded-full appearance-none slider backdrop-blur-sm touch-manipulation"
                     style={{
                       background: `linear-gradient(to right, #10b981 0%, #10b981 ${globalState.volume * 100}%, rgba(255,255,255,0.2) ${globalState.volume * 100}%, rgba(255,255,255,0.2) 100%)`
                     }}
@@ -384,7 +384,7 @@ export default function FloatingAudioPlayer() {
           ) : (
             <button 
               onClick={() => updateGlobalState({ open: true })} 
-              className="w-full h-full flex items-center justify-center text-white relative"
+              className="w-full h-full flex items-center justify-center text-white relative touch-manipulation"
             >
               <RiMusicFill size={20} />
               {globalState.playing && (
@@ -400,23 +400,35 @@ export default function FloatingAudioPlayer() {
       <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
-          width: 16px;
-          height: 16px;
+          width: 20px;
+          height: 20px;
           background: #10b981;
           border-radius: 50%;
           cursor: pointer;
-          box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
-          border: 2px solid rgba(255,255,255,0.2);
+          box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+          border: 3px solid rgba(255,255,255,0.3);
         }
         
         .slider::-moz-range-thumb {
-          width: 16px;
-          height: 16px;
+          width: 20px;
+          height: 20px;
           background: #10b981;
           border-radius: 50%;
           cursor: pointer;
-          border: 2px solid rgba(255,255,255,0.2);
-          box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+          border: 3px solid rgba(255,255,255,0.3);
+          box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+
+        @media (max-width: 640px) {
+          .slider::-webkit-slider-thumb {
+            width: 24px;
+            height: 24px;
+          }
+          
+          .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+          }
         }
       `}</style>
     </>
