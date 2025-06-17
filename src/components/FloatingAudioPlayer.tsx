@@ -241,13 +241,13 @@ export default function FloatingAudioPlayer() {
   return (
     <>
       {(globalState.expanded || globalState.open) && (
-        <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-3xl" />
+        <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-3xl" />
       )}
 
       {globalState.expanded && (
         <div
           ref={modalRef}
-          className="fixed inset-0 z-[10000] bg-black/60 backdrop-blur-3xl border border-white/10 shadow-2xl flex flex-col sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[95%] sm:max-w-md sm:h-[85%] sm:rounded-3xl md:max-w-lg lg:max-w-xl"
+          className="fixed inset-0 z-[10000] bg-black/30 backdrop-blur-3xl border border-white/10 shadow-2xl flex flex-col sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[95%] sm:max-w-md sm:h-[85%] sm:rounded-3xl md:max-w-lg lg:max-w-xl"
         >
           <div 
             className="flex justify-between items-center p-6 sm:p-7 border-b border-white/10 flex-shrink-0 bg-black/40 backdrop-blur-3xl min-h-[80px]"
@@ -394,7 +394,7 @@ export default function FloatingAudioPlayer() {
           box-shadow: 0 0 20px rgba(16, 185, 129, 1);
           border: 5px solid rgba(255,255,255,0.7);
         }
-    .slider::-moz-range-thumb {
+        .slider::-moz-range-thumb {
           width: 32px;
           height: 32px;
           background: #10b981;
@@ -402,8 +402,17 @@ export default function FloatingAudioPlayer() {
           cursor: pointer;
           border: 5px solid rgba(255,255,255,0.7);
           box-shadow: 0 0 20px rgba(16, 185, 129, 1);
-        }
-      `}</style>
-    </>
-  );
-}
+        } 
+              .slider::-ms-thumb {
+                width: 32px;
+                height: 32px;
+                background: #10b981;
+                border-radius: 50%;
+                cursor: pointer;
+                border: 5px solid rgba(255,255,255,0.7);
+                box-shadow: 0 0 20px rgba(16, 185, 129, 1);
+              }
+            `}</style>
+          </>
+        );
+      }
