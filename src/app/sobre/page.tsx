@@ -24,7 +24,7 @@ export default function Sobre() {
           <section className="rounded-3xl shadow-xl px-6 py-8 border border-[#a9446a]/20 bg-white/10 backdrop-blur-md flex flex-col items-center hover:bg-white/20 transition">
             <div className="overflow-hidden rounded-3xl mb-6" style={{ width: 160 }}>
               <img
-                src="/coffeme.png"
+                src="/images/coffeme.png"
                 alt="Leticia Eltermann"
                 className={`w-40 h-auto max-w-full transition-transform duration-500 ${zoom ? "scale-110" : "scale-100"}`}
                 style={{
