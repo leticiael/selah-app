@@ -45,7 +45,7 @@ export default function Home() {
       <div className="w-full flex flex-col lg:flex-row items-center justify-center relative mt-[4rem] mb-[4rem]">
         <div className="hidden lg:flex flex-col justify-center items-center mr-8">
           <img
-            src="cervo.png"
+            src="/images/cervo.png"
             alt="Ilustração de cervo"
             className="max-h-[28rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl cursor-pointer"
             onMouseEnter={() => setBlurActive(true)}
@@ -77,14 +77,14 @@ export default function Home() {
               </a>
             ))}
           </div>
-<div className="w-full flex justify-center my-4">
-  <a
-    href="/respire"
-    className="bg-selah-button/90 text-selah-text py-[1rem] px-[1.5rem] rounded-[1rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/70 hover:scale-105 transition flex items-center justify-center gap-[0.75rem] w-full sm:w-auto text-[1.125rem] font-medium"
-  >
-    Apenas quero respirar
-  </a>
-</div>
+          <div className="w-full flex justify-center my-4">
+            <a
+              href="/respire"
+              className="bg-selah-button/90 text-selah-text py-[1rem] px-[1.5rem] rounded-[1rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/70 hover:scale-105 transition flex items-center justify-center gap-[0.75rem] w-full sm:w-auto text-[1.125rem] font-medium"
+            >
+              Apenas quero respirar
+            </a>
+          </div>
           <p className="text-[1rem] italic relative text-selah-soft">
             (Não se preocupe muito com isso, todas foram pensadas para te ajudar.)
           </p>
@@ -120,7 +120,7 @@ export default function Home() {
         <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-10">
           <div className="flex-shrink-0 flex items-center justify-center mb-6 lg:mb-0">
             <img
-              src="grua.png"
+              src="/images/grua.png"
               alt="Ilustração de garça"
               className="h-[22rem] w-auto object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl cursor-pointer"
               style={{ minWidth: "12rem" }}
@@ -175,8 +175,8 @@ export default function Home() {
                   M0,160 Q120,260 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160;
                   M0,160 Q120,60 240,160 T480,160 T720,160 T960,160 T1200,160 T1440,160
                 "
-          />
-        </path>
+            />
+          </path>
         </svg>
         <p className="text-[1.15rem] text-black text-selah-soft mt-[2.5rem] mb-[1.5rem]">
           Obrigada por nos escolher, desenvolvido por Leticia Eltermann <span className="heart">❤️</span>

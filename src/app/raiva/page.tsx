@@ -70,7 +70,7 @@ export default function RaivaPage() {
       {!sel && !isZenMode && (
         <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
           <img
-            src="/lobosf.png"
+            src="/images/lobosf.png"
             alt="Ilustração de lobo"
             className="max-h-[24rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl"
           />

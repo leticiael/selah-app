@@ -71,7 +71,7 @@ export default function MedoPage() {
       {!sel && !isZenMode && (
         <div className="absolute left-0 top-[6rem] hidden lg:block z-40">
           <img
-            src="/cavalosf.png"
+            src="/images/cavalosf.png"
             alt="Ilustração de cavalo"
             className="max-h-[24rem] object-contain opacity-90 transition-all duration-300 hover:scale-110 hover:drop-shadow-2xl"
           />
