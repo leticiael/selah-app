@@ -238,6 +238,22 @@ export default function FloatingAudioPlayer() {
     document.addEventListener("mouseup", handleMouseUp);
   };
 
+  // Função para abrir o modal quando clicar na área do player
+  const handlePlayerClick = (e: React.MouseEvent) => {
+    // Prevenir propagação se clicou nos controles
+    const target = e.target as HTMLElement;
+    if (
+      target.closest('button') || 
+      target.closest('input') ||
+      target.tagName === 'BUTTON' ||
+      target.tagName === 'INPUT'
+    ) {
+      return;
+    }
+    
+    updateGlobalState({ expanded: true });
+  };
+
   if (isZenMode) {
     return null;
   }
@@ -325,40 +341,49 @@ export default function FloatingAudioPlayer() {
           ref={playerRef}
           className={`fixed z-30 bg-black/40 backdrop-blur-xl border border-white/20 shadow-2xl transition-all duration-300 ease-out ${
             globalState.open 
-              ? "w-64 sm:w-72 p-4 rounded-3xl cursor-default" 
+              ? "w-64 sm:w-72 p-4 rounded-3xl cursor-pointer" 
               : "w-14 h-14 p-0 rounded-2xl hover:scale-105 active:scale-95 hover:bg-black/50 cursor-grab active:cursor-grabbing"
           }`}
           style={{ top: globalState.position.y, left: globalState.position.x }}
-          onMouseDown={handleMouseDown}
+          onMouseDown={globalState.open ? undefined : handleMouseDown}
+          onClick={globalState.open ? handlePlayerClick : () => updateGlobalState({ open: true })}
         >
           {globalState.open ? (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={() => updateGlobalState({ expanded: true })}
-                  className="text-white text-sm font-light flex items-center gap-3 hover:text-emerald-300 transition-colors flex-1 min-w-0 touch-manipulation"
-                >
+              {/* Header clicável para abrir modal */}
+              <div className="flex items-center justify-between cursor-pointer hover:bg-white/5 rounded-lg p-2 -m-2 transition-colors">
+                <div className="text-white text-sm font-light flex items-center gap-3 flex-1 min-w-0">
                   <RiMusicFill size={16} className="flex-shrink-0" />
                   <span className="truncate">{currentTrack.label}</span>
-                </button>
+                </div>
                 <button
-                  onClick={() => updateGlobalState({ open: false })}
-                  className="text-white/60 hover:text-white transition-colors p-2 ml-2 flex-shrink-0 touch-manipulation"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    updateGlobalState({ open: false });
+                  }}
+                  className="text-white/60 hover:text-white transition-colors p-2 flex-shrink-0 touch-manipulation hover:bg-white/10 rounded-lg"
                 >
                   <RiCloseFill size={16} />
                 </button>
               </div>
               
+              {/* Controles não clicáveis para modal */}
               <div className="flex items-center gap-3">
                 <button
-                  onClick={playPause}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    playPause();
+                  }}
                   className="w-12 h-12 rounded-2xl bg-white/20 text-white hover:bg-white/30 transition-all backdrop-blur-sm flex items-center justify-center border border-white/10 touch-manipulation"
                 >
                   {globalState.playing ? <RiPauseFill size={18} /> : <RiPlayFill size={18} />}
                 </button>
                 
                 <button
-                  onClick={next}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    next();
+                  }}
                   className="w-12 h-12 rounded-2xl bg-white/10 text-white/80 hover:bg-white/20 hover:text-white transition-all backdrop-blur-sm flex items-center justify-center border border-white/10 touch-manipulation"
                 >
                   <RiSkipForwardFill size={18} />
@@ -373,6 +398,7 @@ export default function FloatingAudioPlayer() {
                     step={0.01}
                     value={globalState.volume}
                     onChange={(e) => updateGlobalState({ volume: parseFloat(e.target.value) })}
+                    onClick={(e) => e.stopPropagation()}
                     className="flex-1 h-3 bg-white/20 rounded-full appearance-none slider backdrop-blur-sm touch-manipulation"
                     style={{
                       background: `linear-gradient(to right, #10b981 0%, #10b981 ${globalState.volume * 100}%, rgba(255,255,255,0.2) ${globalState.volume * 100}%, rgba(255,255,255,0.2) 100%)`
@@ -383,7 +409,6 @@ export default function FloatingAudioPlayer() {
             </div>
           ) : (
             <button 
-              onClick={() => updateGlobalState({ open: true })} 
               className="w-full h-full flex items-center justify-center text-white relative touch-manipulation"
             >
               <RiMusicFill size={20} />
