@@ -51,7 +51,6 @@ const soundCategories = [
   }
 ];
 
-// Flatten all tracks for easy access
 const allTracks = soundCategories.flatMap(category => category.tracks);
 
 let globalAudio: HTMLAudioElement | null = null;
@@ -74,7 +73,6 @@ function updateGlobalState(newState: Partial<typeof globalState>) {
 export default function FloatingAudioPlayer() {
   const [, forceUpdate] = useState({});
   const { isZenMode } = useContext(ZenModeContext);
-  
   const playerRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -87,21 +85,19 @@ export default function FloatingAudioPlayer() {
     };
   }, []);
 
-  // Prevent body scroll when modal is open
   useEffect(() => {
-    if (globalState.expanded) {
+    if (globalState.expanded || globalState.open) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
       document.documentElement.style.overflow = 'unset';
     }
-    
     return () => {
       document.body.style.overflow = 'unset';
       document.documentElement.style.overflow = 'unset';
     };
-  }, [globalState.expanded]);
+  }, [globalState.expanded, globalState.open]);
 
   useEffect(() => {
     if (!globalAudio) {
@@ -110,15 +106,12 @@ export default function FloatingAudioPlayer() {
       globalAudio.volume = globalState.volume;
       globalAudio.loop = true;
       globalAudio.preload = "metadata";
-
       globalAudio.addEventListener('play', () => {
         updateGlobalState({ playing: true });
       });
-
       globalAudio.addEventListener('pause', () => {
         updateGlobalState({ playing: false });
       });
-
       globalAudio.addEventListener('ended', () => {
         const nextIndex = (globalState.index + 1) % allTracks.length;
         globalAudio!.src = allTracks[nextIndex].file;
@@ -145,28 +138,21 @@ export default function FloatingAudioPlayer() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node) &&
-        globalState.expanded
+        (modalRef.current && !modalRef.current.contains(event.target as Node)) ||
+        (playerRef.current && !playerRef.current.contains(event.target as Node))
       ) {
-        updateGlobalState({ expanded: false });
-      }
-
-      if (
-        playerRef.current &&
-        !playerRef.current.contains(event.target as Node) &&
-        globalState.open &&
-        !globalState.expanded
-      ) {
-        updateGlobalState({ open: false });
+        if (globalState.expanded || globalState.open) {
+          updateGlobalState({ expanded: false, open: false });
+        }
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
+    if (globalState.expanded || globalState.open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [globalState.expanded, globalState.open]);
 
   const currentTrack = useMemo(() => allTracks[globalState.index], [globalState.index]);
 
@@ -176,7 +162,6 @@ export default function FloatingAudioPlayer() {
       e.stopPropagation();
     }
     if (!globalAudio) return;
-
     if (globalAudio.paused) {
       globalAudio.play().catch(() => {});
     } else {
@@ -190,13 +175,10 @@ export default function FloatingAudioPlayer() {
       e.stopPropagation();
     }
     if (!globalAudio) return;
-
     const nextIndex = (globalState.index + 1) % allTracks.length;
     const wasPlaying = !globalAudio.paused;
-    
     globalAudio.pause();
     updateGlobalState({ index: nextIndex });
-
     setTimeout(() => {
       if (wasPlaying && globalAudio) {
         globalAudio.play().catch(() => {});
@@ -206,14 +188,12 @@ export default function FloatingAudioPlayer() {
 
   const selectTrack = useCallback((trackIndex: number) => {
     if (!globalAudio) return;
-
     globalAudio.pause();
     updateGlobalState({ 
       index: trackIndex, 
       expanded: false, 
       open: true 
     });
-
     setTimeout(() => {
       if (globalAudio) {
         globalAudio.play().catch(() => {});
@@ -222,14 +202,11 @@ export default function FloatingAudioPlayer() {
   }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    // Não permitir drag quando o modal expandido estiver aberto
     if (globalState.expanded) return;
-    
     dragging.current = true;
     const startX = e.clientX;
     const startY = e.clientY;
     const startPos = globalState.position;
-
     const handleMouseMove = (moveEvent: MouseEvent) => {
       if (!dragging.current) return;
       const dx = moveEvent.clientX - startX;
@@ -238,13 +215,11 @@ export default function FloatingAudioPlayer() {
       const newY = Math.max(8, Math.min(window.innerHeight - (globalState.open ? 120 : 64), startPos.y + dy));
       updateGlobalState({ position: { x: newX, y: newY } });
     };
-
     const handleMouseUp = () => {
       dragging.current = false;
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   };
@@ -265,65 +240,59 @@ export default function FloatingAudioPlayer() {
 
   return (
     <>
-      {/* Overlay para o modal expandido */}
-      {globalState.expanded && (
-        <div className="fixed inset-0 z-40 bg-black/80 backdrop-blur-md" />
+      {(globalState.expanded || globalState.open) && (
+        <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-3xl" />
       )}
 
-      {/* Modal expandido de seleção de música */}
       {globalState.expanded && (
         <div
           ref={modalRef}
-          className="fixed inset-0 z-50 bg-black/30 backdrop-blur-2xl border border-white/5 shadow-2xl flex flex-col sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[90%] sm:max-w-lg sm:h-[90%] sm:rounded-2xl md:max-w-xl lg:max-w-2xl"
+          className="fixed inset-0 z-[10000] bg-black/60 backdrop-blur-3xl border border-white/10 shadow-2xl flex flex-col sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[95%] sm:max-w-md sm:h-[85%] sm:rounded-3xl md:max-w-lg lg:max-w-xl"
         >
-          {/* Header fixo */}
-          <div className="flex justify-between items-center p-4 sm:p-5 border-b border-white/5 flex-shrink-0 bg-black/20 backdrop-blur-md">
-            <h2 className="text-lg sm:text-xl font-light text-white/90 tracking-wider">Sons Ambientes</h2>
+          <div 
+            className="flex justify-between items-center p-6 sm:p-7 border-b border-white/10 flex-shrink-0 bg-black/40 backdrop-blur-3xl min-h-[80px]"
+          >
+            <h2 className="text-xl sm:text-2xl font-light text-white tracking-wider">Sons</h2>
             <button
-              className="p-3 hover:bg-white/10 rounded-xl text-white/40 hover:text-white/80 transition-all touch-manipulation"
-              onClick={() => updateGlobalState({ expanded: false })}
+              className="p-4 hover:bg-white/20 rounded-2xl text-white/60 hover:text-white transition-all touch-manipulation"
+              onClick={() => updateGlobalState({ expanded: false, open: false })}
             >
-              <RiCloseFill size={22} />
+              <RiCloseFill size={26} />
             </button>
           </div>
-
-          {/* Conteúdo scrollável */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ WebkitOverflowScrolling: 'touch' }}>
-            <div className="p-4 sm:p-5 space-y-5 sm:space-y-6">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden backdrop-blur-3xl" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="p-5 sm:p-6 space-y-6 sm:space-y-8">
               {soundCategories.map((category, categoryIndex) => {
                 const CategoryIcon = category.icon;
                 return (
-                  <div key={categoryIndex} className="space-y-4">
-                    {/* Header categoria com melhor visibilidade */}
-                    <div className="flex items-center gap-3 text-white/70 bg-black/40 backdrop-blur-md px-4 py-3 rounded-xl sticky top-0 z-10">
-                      <CategoryIcon size={18} />
-                      <h3 className="text-base font-medium tracking-wide uppercase">{category.name}</h3>
+                  <div key={categoryIndex} className="space-y-5">
+                    <div 
+                      className="flex items-center gap-4 text-white/80 bg-black/60 backdrop-blur-3xl px-5 py-4 rounded-2xl sticky top-0 z-20 min-h-[60px]"
+                    >
+                      <CategoryIcon size={22} />
+                      <h3 className="text-lg font-medium tracking-wide uppercase">{category.name}</h3>
                     </div>
-                    
-                    {/* Grid com botões mega clicáveis */}
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 gap-5">
                       {category.tracks.map((track, trackIndex) => {
                         const globalTrackIndex = soundCategories
                           .slice(0, categoryIndex)
                           .reduce((acc, cat) => acc + cat.tracks.length, 0) + trackIndex;
-                        
                         const IconComponent = track.icon;
                         const isActive = globalState.index === globalTrackIndex;
-                        
                         return (
                           <button
                             key={trackIndex}
                             onClick={() => selectTrack(globalTrackIndex)}
-                            className={`p-5 sm:p-6 rounded-2xl text-base font-medium flex items-center gap-4 transition-all hover:scale-[1.02] active:scale-[0.98] border text-left min-h-[72px] sm:min-h-[80px] touch-manipulation ${
+                            className={`p-6 sm:p-8 rounded-3xl text-lg font-semibold flex items-center gap-5 transition-all hover:scale-[1.02] active:scale-[0.98] border text-left min-h-[90px] sm:min-h-[100px] touch-manipulation ${
                               isActive
-                                ? "bg-white/25 text-white border-white/30 shadow-xl"
-                                : "bg-white/10 text-white/85 hover:bg-white/20 border-white/10 hover:text-white active:bg-white/25"
+                                ? "bg-white/30 text-white border-white/40 shadow-2xl backdrop-blur-3xl"
+                                : "bg-white/15 text-white/90 hover:bg-white/25 border-white/15 hover:text-white active:bg-white/35 backdrop-blur-3xl"
                             }`}
                           >
-                            <IconComponent size={24} className="flex-shrink-0 opacity-90" />
-                            <span className="text-base sm:text-lg truncate flex-1 tracking-wide font-medium">{track.label}</span>
+                            <IconComponent size={28} className="flex-shrink-0" />
+                            <span className="text-lg sm:text-xl truncate flex-1 tracking-wide font-semibold">{track.label}</span>
                             {isActive && globalState.playing && (
-                              <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse flex-shrink-0" />
+                              <div className="w-4 h-4 bg-emerald-400 rounded-full animate-pulse flex-shrink-0" />
                             )}
                           </button>
                         );
@@ -333,64 +302,54 @@ export default function FloatingAudioPlayer() {
                 );
               })}
             </div>
-            
-            {/* Espaço final generoso para scroll completo */}
-            <div className="h-16" />
+            <div className="h-24" />
           </div>
         </div>
       )}
 
-      {/* Player flutuante - só aparece quando modal não está expandido */}
       {!globalState.expanded && (
         <div
           ref={playerRef}
-          className={`fixed z-30 bg-black/40 backdrop-blur-xl border border-white/20 shadow-2xl transition-all duration-300 ease-out ${
+          className={`fixed z-[10001] bg-black/50 backdrop-blur-3xl border border-white/30 shadow-2xl transition-all duration-300 ease-out ${
             globalState.open 
-              ? "w-64 sm:w-72 p-4 rounded-3xl" 
-              : "w-14 h-14 p-0 rounded-2xl hover:scale-105 active:scale-95 hover:bg-black/50 cursor-grab active:cursor-grabbing"
+              ? "w-72 sm:w-80 p-5 rounded-3xl" 
+              : "w-16 h-16 p-0 rounded-3xl hover:scale-110 active:scale-95 hover:bg-black/60 cursor-grab active:cursor-grabbing"
           }`}
           style={{ top: globalState.position.y, left: globalState.position.x }}
           onMouseDown={globalState.open ? undefined : handleMouseDown}
         >
           {globalState.open ? (
-            <div className="space-y-4">
-              {/* Header clicável mega grande para abrir modal */}
+            <div className="space-y-5">
               <button
                 onClick={openModal}
-                className="w-full text-white text-sm font-light flex items-center gap-3 hover:text-emerald-300 transition-colors p-4 hover:bg-white/10 rounded-xl touch-manipulation min-h-[56px]"
+                className="w-full text-white text-base font-medium flex items-center gap-4 hover:text-emerald-300 transition-colors p-5 hover:bg-white/15 rounded-2xl touch-manipulation min-h-[70px] backdrop-blur-3xl bg-white/10"
               >
-                <RiMusicFill size={18} className="flex-shrink-0" />
-                <span className="truncate flex-1 text-left text-base">{currentTrack.label}</span>
+                <RiMusicFill size={22} className="flex-shrink-0" />
+                <span className="truncate flex-1 text-left text-lg font-semibold">{currentTrack.label}</span>
               </button>
-              
-              {/* Botão fechar maior */}
               <button
-                onClick={() => updateGlobalState({ open: false })}
-                className="absolute top-2 right-2 text-white/60 hover:text-white transition-colors p-3 hover:bg-white/10 rounded-xl touch-manipulation"
+                onClick={() => updateGlobalState({ open: false, expanded: false })}
+                className="absolute top-3 right-3 text-white/60 hover:text-white transition-colors p-4 hover:bg-white/20 rounded-2xl touch-manipulation"
               >
-                <RiCloseFill size={18} />
+                <RiCloseFill size={22} />
               </button>
-              
-              {/* Controles mega clicáveis */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-5">
                 <button
                   onMouseDown={playPause}
                   onTouchStart={playPause}
-                  className="w-16 h-16 rounded-2xl bg-white/20 text-white hover:bg-white/30 active:bg-white/40 transition-all backdrop-blur-sm flex items-center justify-center border border-white/10 touch-manipulation"
+                  className="w-20 h-20 rounded-3xl bg-white/25 text-white hover:bg-white/35 active:bg-white/45 transition-all backdrop-blur-3xl flex items-center justify-center border border-white/20 touch-manipulation"
                 >
-                  {globalState.playing ? <RiPauseFill size={22} /> : <RiPlayFill size={22} />}
+                  {globalState.playing ? <RiPauseFill size={26} /> : <RiPlayFill size={26} />}
                 </button>
-                
                 <button
                   onMouseDown={next}
                   onTouchStart={next}
-                  className="w-16 h-16 rounded-2xl bg-white/10 text-white/80 hover:bg-white/20 hover:text-white active:bg-white/30 transition-all backdrop-blur-sm flex items-center justify-center border border-white/10 touch-manipulation"
+                  className="w-20 h-20 rounded-3xl bg-white/15 text-white/80 hover:bg-white/25 hover:text-white active:bg-white/35 transition-all backdrop-blur-3xl flex items-center justify-center border border-white/15 touch-manipulation"
                 >
-                  <RiSkipForwardFill size={22} />
+                  <RiSkipForwardFill size={26} />
                 </button>
-                
-                <div className="flex items-center gap-3 flex-1">
-                  <RiVolumeUpFill className="text-white/60" size={18} />
+                <div className="flex items-center gap-4 flex-1">
+                  <RiVolumeUpFill className="text-white/70" size={22} />
                   <input
                     type="range"
                     min={0}
@@ -400,9 +359,9 @@ export default function FloatingAudioPlayer() {
                     onChange={handleVolumeChange}
                     onMouseDown={(e) => e.stopPropagation()}
                     onTouchStart={(e) => e.stopPropagation()}
-                    className="flex-1 h-5 bg-white/20 rounded-full appearance-none slider backdrop-blur-sm touch-manipulation"
+                    className="flex-1 h-6 bg-white/25 rounded-full appearance-none slider backdrop-blur-3xl touch-manipulation"
                     style={{
-                      background: `linear-gradient(to right, #10b981 0%, #10b981 ${globalState.volume * 100}%, rgba(255,255,255,0.2) ${globalState.volume * 100}%, rgba(255,255,255,0.2) 100%)`
+                      background: `linear-gradient(to right, #10b981 0%, #10b981 ${globalState.volume * 100}%, rgba(255,255,255,0.25) ${globalState.volume * 100}%, rgba(255,255,255,0.25) 100%)`
                     }}
                   />
                 </div>
@@ -413,10 +372,10 @@ export default function FloatingAudioPlayer() {
               onClick={() => updateGlobalState({ open: true })}
               className="w-full h-full flex items-center justify-center text-white relative touch-manipulation"
             >
-              <RiMusicFill size={20} />
+              <RiMusicFill size={24} />
               {globalState.playing && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full">
-                  <div className="w-3 h-3 bg-emerald-400 rounded-full animate-ping absolute" />
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full">
+                  <div className="w-4 h-4 bg-emerald-400 rounded-full animate-ping absolute" />
                 </div>
               )}
             </button>
@@ -427,23 +386,22 @@ export default function FloatingAudioPlayer() {
       <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
-          width: 28px;
-          height: 28px;
+          width: 32px;
+          height: 32px;
           background: #10b981;
           border-radius: 50%;
           cursor: pointer;
-          box-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
-          border: 4px solid rgba(255,255,255,0.5);
+          box-shadow: 0 0 20px rgba(16, 185, 129, 1);
+          border: 5px solid rgba(255,255,255,0.7);
         }
-        
-        .slider::-moz-range-thumb {
-          width: 28px;
-          height: 28px;
+    .slider::-moz-range-thumb {
+          width: 32px;
+          height: 32px;
           background: #10b981;
           border-radius: 50%;
           cursor: pointer;
-          border: 4px solid rgba(255,255,255,0.5);
-          box-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
+          border: 5px solid rgba(255,255,255,0.7);
+          box-shadow: 0 0 20px rgba(16, 185, 129, 1);
         }
       `}</style>
     </>
