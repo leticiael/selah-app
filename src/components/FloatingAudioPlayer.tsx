@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo, useContext } from "react";
 import { FaPlay, FaPause, FaForward, FaVolumeUp, FaMusic } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+import { ZenModeContext } from "@/components/ZenModeProvider";
 
 const tracks = [
   { label: "Pássaros", file: "/sounds/birds.mp3" },
@@ -19,255 +20,273 @@ const tracks = [
   { label: "Teclado", file: "/sounds/teclado.mp3" },
 ];
 
+// Global state que persiste entre navegações
+let globalAudio: HTMLAudioElement | null = null;
+let globalState = {
+  open: false,
+  expanded: false,
+  playing: false,
+  index: 0,
+  volume: 0.5,
+  position: { x: 32, y: 32 }
+};
+
+const listeners = new Set<() => void>();
+
+function updateGlobalState(newState: Partial<typeof globalState>) {
+  globalState = { ...globalState, ...newState };
+  listeners.forEach(listener => listener());
+}
+
 export default function FloatingAudioPlayer() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [volume, setVolume] = useState(0.5);
-  const [isMounted, setIsMounted] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [, forceUpdate] = useState({});
+  const { isZenMode } = useContext(ZenModeContext);
+  
+  const playerRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    const listener = () => forceUpdate({});
+    listeners.add(listener);
+    return () => {
+      listeners.delete(listener);
+    };
   }, []);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
+    if (!globalAudio) {
+      globalAudio = new Audio();
+      globalAudio.src = tracks[globalState.index].file;
+      globalAudio.volume = globalState.volume;
+      globalAudio.loop = true;
+      globalAudio.preload = "metadata";
+
+      globalAudio.addEventListener('play', () => {
+        updateGlobalState({ playing: true });
+      });
+
+      globalAudio.addEventListener('pause', () => {
+        updateGlobalState({ playing: false });
+      });
+
+      globalAudio.addEventListener('ended', () => {
+        const nextIndex = (globalState.index + 1) % tracks.length;
+        globalAudio!.src = tracks[nextIndex].file;
+        updateGlobalState({ index: nextIndex });
+        if (globalState.playing) {
+          globalAudio!.play().catch(() => {});
+        }
+      });
     }
-  }, [volume]);
+  }, []);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    if (globalAudio) {
+      globalAudio.volume = globalState.volume;
+    }
+  }, [globalState.volume]);
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-    const handleLoadStart = () => setIsPlaying(false);
-    const handleCanPlay = () => {
-      // Só atualiza se o audio realmente estiver tocando
-      if (!audio.paused) {
-        setIsPlaying(true);
-      }
-    };
-
-    audio.addEventListener('play', handlePlay);
-    audio.addEventListener('pause', handlePause);
-    audio.addEventListener('loadstart', handleLoadStart);
-    audio.addEventListener('canplay', handleCanPlay);
-
-    return () => {
-      audio.removeEventListener('play', handlePlay);
-      audio.removeEventListener('pause', handlePause);
-      audio.removeEventListener('loadstart', handleLoadStart);
-      audio.removeEventListener('canplay', handleCanPlay);
-    };
-  }, [trackIndex]);
+  useEffect(() => {
+    if (globalAudio) {
+      globalAudio.src = tracks[globalState.index].file;
+    }
+  }, [globalState.index]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (isExpanded && !target.closest('[data-audio-player]')) {
-        setIsExpanded(false);
+      if (
+        playerRef.current &&
+        !playerRef.current.contains(event.target as Node) &&
+        globalState.open
+      ) {
+        updateGlobalState({ open: false });
+      }
+
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node) &&
+        globalState.expanded
+      ) {
+        updateGlobalState({ expanded: false });
       }
     };
 
-    if (isExpanded) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isExpanded]);
+  }, []);
 
-  const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  const currentTrack = useMemo(() => tracks[globalState.index], [globalState.index]);
 
-    if (audio.paused) {
-      audio.play().catch(console.error);
+  const playPause = useCallback(() => {
+    if (!globalAudio) return;
+
+    if (globalAudio.paused) {
+      globalAudio.play().catch(() => {});
     } else {
-      audio.pause();
+      globalAudio.pause();
     }
-  };
+  }, []);
 
-  const nextTrack = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  const next = useCallback(() => {
+    if (!globalAudio) return;
 
-    const wasPlaying = !audio.paused;
-    const nextIndex = (trackIndex + 1) % tracks.length;
+    const nextIndex = (globalState.index + 1) % tracks.length;
+    const wasPlaying = !globalAudio.paused;
     
-    // Pausa o áudio atual
-    audio.pause();
-    setIsPlaying(false);
-    setTrackIndex(nextIndex);
-    
-    // Aguarda o novo track carregar e toca se estava tocando antes
+    globalAudio.pause();
+    updateGlobalState({ index: nextIndex });
+
     setTimeout(() => {
-      if (wasPlaying && audioRef.current) {
-        audioRef.current.play().catch(console.error);
+      if (wasPlaying && globalAudio) {
+        globalAudio.play().catch(() => {});
       }
-    }, 200);
-  };
+    }, 100);
+  }, []);
 
-  const selectTrack = (index: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  const selectTrack = useCallback((i: number) => {
+    if (!globalAudio) return;
 
-    // Pausa o áudio atual
-    audio.pause();
-    setIsPlaying(false);
-    setTrackIndex(index);
-    setIsExpanded(false);
-    setIsOpen(true);
-    
-    // Aguarda o novo track carregar e toca
+    globalAudio.pause();
+    updateGlobalState({ 
+      index: i, 
+      expanded: false, 
+      open: true 
+    });
+
     setTimeout(() => {
-      if (audioRef.current) {
-        audioRef.current.play().catch(console.error);
+      if (globalAudio) {
+        globalAudio.play().catch(() => {});
       }
-    }, 200);
+    }, 100);
+  }, []);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    dragging.current = true;
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startPos = globalState.position;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      if (!dragging.current) return;
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+      const newX = Math.max(0, Math.min(window.innerWidth - 180, startPos.x + dx));
+      const newY = Math.max(0, Math.min(window.innerHeight - 180, startPos.y + dy));
+      updateGlobalState({ position: { x: newX, y: newY } });
+    };
+
+    const handleMouseUp = () => {
+      dragging.current = false;
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
   };
 
-  const openExpandedView = () => {
-    setIsExpanded(true);
-  };
-
-  const closeExpandedView = () => {
-    setIsExpanded(false);
-  };
-
-  const minimizePlayer = () => {
-    setIsOpen(false);
-  };
-
-  if (!isMounted) {
+  if (isZenMode) {
     return null;
   }
-  
+
   return (
     <>
-      {isExpanded && (
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-md z-40"
-          onClick={closeExpandedView}
-        />
+      {globalState.expanded && (
+        <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" />
       )}
 
-      {isExpanded && (
-        <div 
-          data-audio-player
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-lg rounded-3xl p-8 w-11/12 max-w-3xl z-50 shadow-2xl border border-white/20"
+      {globalState.expanded && (
+        <div
+          ref={modalRef}
+          className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 bg-neutral-950/90 backdrop-blur-md border border-white/20 shadow-2xl rounded-3xl p-6 w-11/12 max-w-2xl"
         >
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-white">Escolha um som ambiente</h2>
-            <button 
-              onClick={closeExpandedView}
-              className="p-2 rounded-full hover:bg-white/20 transition text-white"
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-white">Ambientes Sonoros</h2>
+            <button
+              className="p-2 hover:bg-white/10 rounded-full text-white"
+              onClick={() => updateGlobalState({ expanded: false })}
             >
-              <IoMdClose size={24} />
+              <IoMdClose size={20} />
             </button>
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {tracks.map((track, idx) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {tracks.map((t, i) => (
               <button
-                key={idx}
-                onClick={() => selectTrack(idx)}
-                className={`p-4 rounded-xl transition-all flex items-center gap-2 hover:scale-105 border ${
-                  trackIndex === idx
-                    ? "bg-white/30 text-white shadow-lg border-white/40"
-                    : "bg-black/60 hover:bg-black/40 text-white/90 border-white/20 hover:border-white/40"
-                }`}
+                key={i}
+                onClick={() => selectTrack(i)}
+                className={`px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition-all
+                  ${globalState.index === i
+                    ? "bg-white/20 text-white"
+                    : "bg-white/5 text-white/80 hover:bg-white/10"
+                  }`}
               >
-                {trackIndex === idx && isPlaying ? (
-                  <FaPause size={16} />
-                ) : (
-                  <FaPlay size={16} />
-                )}
-                <span className="font-medium">{track.label}</span>
+                {globalState.index === i && globalState.playing ? <FaPause size={14} /> : <FaPlay size={14} />}
+                {t.label}
               </button>
             ))}
           </div>
         </div>
       )}
 
-      <audio
-        ref={audioRef}
-        src={tracks[trackIndex].file}
-        onEnded={nextTrack}
-        loop
-        preload="metadata"
-      />
-
-      {!isExpanded && (
+      {!globalState.expanded && (
         <div
-          data-audio-player
-          className={`fixed bottom-8 right-8 z-50 transition-all duration-300 cursor-move ${
-            isOpen 
-              ? "bg-black/70 backdrop-blur-md shadow-lg rounded-2xl p-4 w-64 border border-white/30" 
-              : "bg-black/60 backdrop-blur-sm shadow-lg rounded-full p-3 hover:bg-black/40 hover:scale-110 transition-all border border-white/20"
-          }`}
+          ref={playerRef}
+          className={`fixed z-50 ${globalState.open ? "w-64 p-4" : "p-3"} bg-neutral-800/80 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl`}
+          style={{ top: globalState.position.y, left: globalState.position.x }}
+          onMouseDown={handleMouseDown}
         >
-          {isOpen ? (
+          {globalState.open ? (
             <>
               <div className="flex items-center justify-between">
                 <button
-                  onClick={openExpandedView}
-                  className="flex items-center gap-2 font-semibold text-white hover:text-white/80"
+                  onClick={() => updateGlobalState({ expanded: true })}
+                  className="text-white text-sm font-medium flex items-center gap-2"
                 >
-                  <FaMusic />
-                  {tracks[trackIndex].label}
+                  <FaMusic size={16} />
+                  {currentTrack.label}
                 </button>
-                <button 
-                  onClick={minimizePlayer}
-                  className="text-white/70 hover:text-white"
+                <button
+                  onClick={() => updateGlobalState({ open: false })}
+                  className="text-white/60 hover:text-white"
                 >
-                  <IoMdClose size={20} />
+                  <IoMdClose size={16} />
                 </button>
               </div>
-
-              <div className="mt-4 flex flex-col gap-4">
-                <div className="flex justify-between items-center">
-                  <button 
-                    onClick={togglePlay}
-                    className="p-2 rounded-full bg-white/20 text-white hover:bg-white/30 transition border border-white/30"
-                  >
-                    {isPlaying ? <FaPause size={16} /> : <FaPlay size={16} />}
-                  </button>
-                  <button 
-                    onClick={nextTrack}
-                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition text-white border border-white/30"
-                  >
-                    <FaForward size={16} />
-                  </button>
-                  <div className="flex items-center gap-2">
-                    <FaVolumeUp className="text-white/80" />
-                    <input
-                      type="range"
-                      min={0}
-                      max={1}
-                      step={0.01}
-                      value={volume}
-                      onChange={(e) => setVolume(parseFloat(e.target.value))}
-                      className="accent-white"
-                    />
-                  </div>
+              <div className="flex justify-between items-center mt-4 gap-3">
+                <button
+                  onClick={playPause}
+                  className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20"
+                >
+                  {globalState.playing ? <FaPause size={14} /> : <FaPlay size={14} />}
+                </button>
+                <button
+                  onClick={next}
+                  className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20"
+                >
+                  <FaForward size={14} />
+                </button>
+                <div className="flex items-center gap-2 w-full">
+                  <FaVolumeUp className="text-white/60" size={14} />
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={globalState.volume}
+                    onChange={(e) => updateGlobalState({ volume: parseFloat(e.target.value) })}
+                    className="w-full accent-white"
+                  />
                 </div>
               </div>
             </>
           ) : (
-            <button 
-              onClick={() => setIsOpen(true)} 
-              className="flex items-center justify-center relative"
-              aria-label="Abrir player de música"
-            >
-              <FaMusic className="text-white" size={22} />
-              {isPlaying && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <button onClick={() => updateGlobalState({ open: true })} className="text-white relative">
+              <FaMusic size={20} />
+              {globalState.playing && (
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full animate-ping" />
               )}
             </button>
           )}

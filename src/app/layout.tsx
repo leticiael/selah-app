@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { ZenModeProvider } from "@/components/ZenModeProvider";
 import SmoothScroll from "@/components/smoothScroll";
+import FloatingAudioPlayer from "@/components/FloatingAudioPlayer";
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -32,9 +33,9 @@ export default function RootLayout({
         >
           <SmoothScroll />
           {children}
+          <FloatingAudioPlayer />
         </body>
       </html>
-      
     </ZenModeProvider>
   );
 }
