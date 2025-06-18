@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useContext } from "react";
 import { RiMusicFill, RiSoundModuleFill } from "react-icons/ri";
 import AudioPlayerControls from "./AudioPlayerControls";
 import TrackListModal from "./TrackListModal";
 import FloatingPlayerButton from "./FloatingPlayerButton";
 import { LuBird, LuCloudRain, LuDroplets, LuFeather, LuFlame, LuHeartPulse, LuKeyboard, LuLeaf, LuMoon, LuPiano, LuWaves, LuWind } from "react-icons/lu";
 import { HeartIcon } from "@heroicons/react/24/solid";
+import { ZenModeContext } from "./ZenModeProvider";
 
 const soundCategories = [
   {
@@ -48,7 +49,7 @@ const soundCategories = [
 const allTracks = soundCategories.flatMap(category => category.tracks);
 
 export default function FloatingAudioPlayer() {
-  const isZenMode = false;
+  const { isZenMode } = useContext(ZenModeContext);
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -75,7 +76,6 @@ export default function FloatingAudioPlayer() {
       audio.removeEventListener("play", onPlay);
       audio.removeEventListener("pause", onPause);
     };
-    // eslint-disable-next-line
   }, []);
   useEffect(() => {
     if (audioRef.current) {
@@ -129,7 +129,6 @@ export default function FloatingAudioPlayer() {
   const next = useCallback(() => {
     setIndex(i => (i + 1) % allTracks.length);
   }, []);
-  // Função de voltar faixa
   const prev = useCallback(() => {
     setIndex(i => (i - 1 + allTracks.length) % allTracks.length);
   }, []);
@@ -165,7 +164,6 @@ export default function FloatingAudioPlayer() {
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   };
-  if (isZenMode) return null;
   return (
     <>
       {(open || expanded) && (
@@ -189,7 +187,7 @@ export default function FloatingAudioPlayer() {
               ? "w-72 sm:w-80 p-5 rounded-3xl" 
               : "w-16 h-16 p-0 rounded-3xl hover:scale-110 active:scale-95 hover:bg-black/60 cursor-grab active:cursor-grabbing"
           }`}
-          style={{ top: position.y, left: position.x }}
+          style={{ top: position.y, left: position.x, display: isZenMode ? "none" : undefined }}
           onMouseDown={open ? undefined : handleMouseDown}
         >
           {open ? (
