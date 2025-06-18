@@ -33,7 +33,6 @@ export default function RootLayout({
         >
           <SmoothScroll />
           {children}
-          <FloatingAudioPlayer />
         </body>
       </html>
     </ZenModeProvider>

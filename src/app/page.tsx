@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CloudIcon, FireIcon, MapIcon, MoonIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 export default function Home() {
   const [blurActive, setBlurActive] = useState(false);
@@ -62,28 +63,28 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-[1.5rem] justify-center mb-[2.5rem] relative">
             {[
-              { label: "Pânico", path: "/panico", icon: <CloudIcon className="h-[2rem] w-[2rem] text-black" /> },
-              { label: "Ansiedade", path: "/ansiedade", icon: <MapIcon className="h-[2rem] w-[2rem] text-black" /> },
-              { label: "Raiva", path: "/raiva", icon: <FireIcon className="h-[2rem] w-[2rem] text-black" /> },
-              { label: "Medo", path: "/medo", icon: <MoonIcon className="h-[2rem] w-[2rem] text-black" /> },
+              { label: "Pânico", path: "/respiracao/panico", icon: <CloudIcon className="h-[2rem] w-[2rem] text-black" /> },
+              { label: "Ansiedade", path: "/respiracao/ansiedade", icon: <MapIcon className="h-[2rem] w-[2rem] text-black" /> },
+              { label: "Raiva", path: "/respiracao/raiva", icon: <FireIcon className="h-[2rem] w-[2rem] text-black" /> },
+              { label: "Medo", path: "/respiracao/medo", icon: <MoonIcon className="h-[2rem] w-[2rem] text-black" /> },
             ].map(({ label, path, icon }) => (
-              <a
+              <Link
                 key={label}
                 href={path}
                 className="bg-selah-button/90 text-selah-text py-[1rem] px-[1.5rem] rounded-[1rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/70 hover:scale-105 transition flex items-center justify-center gap-[0.75rem]"
               >
                 {icon}
                 <span className="text-[1.125rem] font-medium">{label}</span>
-              </a>
+              </Link>
             ))}
           </div>
           <div className="w-full flex justify-center my-4">
-            <a
-              href="/respire"
+            <Link
+              href="/respiracao/respire"
               className="bg-selah-button/90 text-selah-text py-[1rem] px-[1.5rem] rounded-[1rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/70 hover:scale-105 transition flex items-center justify-center gap-[0.75rem] w-full sm:w-auto text-[1.125rem] font-medium"
             >
               Apenas quero respirar
-            </a>
+            </Link>
           </div>
           <p className="text-[1rem] italic relative text-selah-soft">
             (Não se preocupe muito com isso, todas foram pensadas para te ajudar.)
@@ -131,18 +132,18 @@ export default function Home() {
           <div className="flex-1 w-full">
             <h2 className="text-[2rem] font-bold mb-[1.5rem] text-black">Explore mais</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-[1.5rem]">
-              <a
+              <Link
                 href="/poesias"
                 className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
               >
                 Poesias que acalmam
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/sobre"
                 className="bg-selah-button/80 text-selah-text py-[1.25rem] px-[1.5rem] rounded-[0.75rem] border-[0.125rem] border-selah-soft shadow hover:bg-selah-button/60 hover:scale-105 transition text-lg font-medium"
               >
                 História do Selah
-              </a>
+              </Link>
               <a
                 href="https://www.cvv.org.br/"
                 target="_blank"
