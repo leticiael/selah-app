@@ -7,23 +7,21 @@ interface VolumeSliderProps {
 
 export default function VolumeSlider({ volume, setVolume }: VolumeSliderProps) {
   return (
-    <div className="flex items-center gap-3 w-full">
-      <div className="relative flex-1 flex items-center">
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={volume}
-          onChange={e => setVolume(parseFloat(e.target.value))}
-          className="w-full h-4 rounded-full appearance-none slider backdrop-blur-xl"
-          style={{
-            background: `linear-gradient(90deg, #a21caf 0%, #06b6d4 ${volume *
-              100}%, rgba(255,255,255,0.10) ${volume * 100}%, rgba(255,255,255,0.10) 100%)`
-          }}
-        />
-      </div>
-      <span className="text-white/80 text-sm font-mono min-w-[32px] text-right select-none">
+    <div className="flex items-center gap-2 w-full">
+      <input
+        type="range"
+        min={0}
+        max={1}
+        step={0.01}
+        value={volume}
+        onChange={e => setVolume(parseFloat(e.target.value))}
+        className="w-full h-3 rounded-full appearance-none bg-gradient-to-r from-cyan-300/30 via-fuchsia-300/30 to-indigo-400/30 backdrop-blur-xl slider"
+        style={{
+          background: `linear-gradient(90deg, #a5f3fc 0%, #f0abfc ${volume *
+            100}%, #fff3 ${volume * 100}%, #fff3 100%)`
+        }}
+      />
+      <span className="text-white/70 text-xs font-mono min-w-[28px] text-right select-none">
         {(volume * 100).toFixed(0)}%
       </span>
       <style jsx>{`
@@ -34,19 +32,17 @@ export default function VolumeSlider({ volume, setVolume }: VolumeSliderProps) {
         }
         .slider::-webkit-slider-thumb {
           appearance: none;
-          margin-top: -10px; /* Centraliza a bolinha na barra */
-          width: 28px;
-          height: 28px;
-          background: conic-gradient(from 180deg at 50% 50%, #a21caf, #06b6d4, #6366f1, #a21caf);
+          margin-top: -6px;
+          width: 20px;
+          height: 20px;
+          background: rgba(255,255,255,0.7);
           border-radius: 50%;
-          cursor: pointer;
-          border: 4px solid #fff;
-          box-shadow: 0 0 16px #06b6d4cc, 0 0 0 4px #a21caf33;
+          box-shadow: 0 2px 12px 0 #a5f3fc55;
+          border: 2px solid #f0abfc88;
           transition: box-shadow 0.2s;
-          animation: fruitacormove 2s linear infinite;
         }
         .slider:active::-webkit-slider-thumb {
-          box-shadow: 0 0 24px #06b6d4cc, 0 0 0 6px #a21caf55;
+          box-shadow: 0 0 16px #f0abfc99;
         }
         .slider::-webkit-slider-runnable-track {
           height: 8px;
@@ -54,40 +50,32 @@ export default function VolumeSlider({ volume, setVolume }: VolumeSliderProps) {
           background: transparent;
         }
         .slider::-moz-range-thumb {
-          width: 28px;
-          height: 28px;
-          background: conic-gradient(from 180deg at 50% 50%, #a21caf, #06b6d4, #6366f1, #a21caf);
+          width: 20px;
+          height: 20px;
+          background: rgba(255,255,255,0.7);
           border-radius: 50%;
-          cursor: pointer;
-          border: 4px solid #fff;
-          box-shadow: 0 0 16px #06b6d4cc, 0 0 0 4px #a21caf33;
+          box-shadow: 0 2px 12px 0 #a5f3fc55;
+          border: 2px solid #f0abfc88;
           transition: box-shadow 0.2s;
-          animation: fruitacormove 2s linear infinite;
         }
         .slider:active::-moz-range-thumb {
-          box-shadow: 0 0 24px #06b6d4cc, 0 0 0 6px #a21caf55;
+          box-shadow: 0 0 16px #f0abfc99;
         }
         .slider::-ms-thumb {
-          width: 28px;
-          height: 28px;
-          background: conic-gradient(from 180deg at 50% 50%, #a21caf, #06b6d4, #6366f1, #a21caf);
+          width: 20px;
+          height: 20px;
+          background: rgba(255,255,255,0.7);
           border-radius: 50%;
-          cursor: pointer;
-          border: 4px solid #fff;
-          box-shadow: 0 0 16px #06b6d4cc, 0 0 0 4px #a21caf33;
+          box-shadow: 0 2px 12px 0 #a5f3fc55;
+          border: 2px solid #f0abfc88;
           transition: box-shadow 0.2s;
-          animation: fruitacormove 2s linear infinite;
         }
         .slider:active::-ms-thumb {
-          box-shadow: 0 0 24px #06b6d4cc, 0 0 0 6px #a21caf55;
+          box-shadow: 0 0 16px #f0abfc99;
         }
         .slider::-ms-fill-lower,
         .slider::-ms-fill-upper {
           background: none;
-        }
-        @keyframes fruitacormove {
-          0% { filter: hue-rotate(0deg);}
-          100% { filter: hue-rotate(360deg);}
         }
       `}</style>
     </div>

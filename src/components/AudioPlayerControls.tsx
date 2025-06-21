@@ -1,5 +1,4 @@
 import React from "react";
-import { RiPlayFill, RiPauseFill, RiSkipForwardFill, RiSkipBackFill, RiVolumeUpFill } from "react-icons/ri";
 import VolumeSlider from "./VolumeSlider";
 
 interface AudioPlayerControlsProps {
@@ -20,48 +19,63 @@ export default function AudioPlayerControls({
   setVolume,
 }: AudioPlayerControlsProps) {
   return (
-    <div className="flex flex-col items-center gap-5 w-full max-w-md mx-auto p-4 rounded-3xl bg-black/5 backdrop-blur-[18px] shadow-lg border border-white/5">
-      <div className="flex gap-4 justify-center items-center">
+    <div className="flex flex-col items-center gap-8 w-full max-w-md mx-auto p-0">
+      <div className="flex gap-10 justify-center items-center">
         <button
           onClick={prev}
-          className="h-11 w-11 rounded-full flex items-center justify-center bg-gradient-to-br from-fuchsia-600/20 via-cyan-400/10 to-indigo-800/20 text-white/70 hover:scale-110 transition-all border border-white/5 shadow"
+          className="h-12 w-12 rounded-full flex items-center justify-center text-cyan-100/80 hover:text-fuchsia-200/90 transition-all"
           aria-label="Voltar"
         >
-          <RiSkipBackFill size={22} />
+          <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="19 20 9 12 19 4" />
+          </svg>
         </button>
         <button
           onClick={playPause}
-          className="h-12 w-12 rounded-full flex items-center justify-center bg-gradient-to-br from-fuchsia-600/30 via-cyan-400/20 to-indigo-800/30 text-white shadow-lg border-2 border-white/10 hover:scale-110 transition-all"
+          className="h-16 w-16 rounded-full flex items-center justify-center text-cyan-100/90 hover:text-fuchsia-200/90 transition-all"
           aria-label={playing ? "Pausar" : "Tocar"}
         >
-          {playing ? <RiPauseFill size={28} /> : <RiPlayFill size={28} />}
+          {playing ? (
+            <svg width="44" height="44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <rect x="12" y="10" width="6" height="24" rx="2" />
+              <rect x="26" y="10" width="6" height="24" rx="2" />
+            </svg>
+          ) : (
+            <svg width="44" height="44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <polygon points="16,10 34,22 16,34" fill="currentColor" />
+            </svg>
+          )}
         </button>
         <button
           onClick={next}
-          className="h-11 w-11 rounded-full flex items-center justify-center bg-gradient-to-br from-fuchsia-600/20 via-cyan-400/10 to-indigo-800/20 text-white/70 hover:scale-110 transition-all border border-white/5 shadow"
+          className="h-12 w-12 rounded-full flex items-center justify-center text-cyan-100/80 hover:text-fuchsia-200/90 transition-all"
           aria-label="Próxima faixa"
         >
-          <RiSkipForwardFill size={22} />
+          <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 4 19 12 9 20" />
+          </svg>
         </button>
       </div>
-      <div className="flex items-center gap-2 w-full max-w-xs">
-        <RiVolumeUpFill className="text-white/70" size={22} />
+      <div className="flex items-center gap-4 w-full max-w-xs">
+        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-100/70">
+          <polygon points="3,9 9,9 13,5 13,19 9,15 3,15" fill="currentColor" />
+          <path d="M16 8a5 5 0 0 1 0 8" />
+        </svg>
         <div className="flex-1">
           <VolumeSlider volume={volume} setVolume={setVolume} />
         </div>
       </div>
-<div className="mt-3 w-full max-w-xs text-center text-white/90 bg-gradient-to-r from-indigo-900/40 to-fuchsia-900/40 backdrop-blur-md rounded-xl px-4 py-3 shadow-lg border border-white/10 hover:scale-105 transition-all">
-  <div className="flex items-center justify-center gap-2 mb-1">
-    <span className="inline-block animate-pulse">☕️</span>
-    <span className="font-semibold text-xs bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-400">
-      Nota da desenvolvedora
-    </span>
-  </div>
-  <p className="text-xs leading-relaxed mt-1">
-    Os áudios ainda são experimentais e podem apresentar pequenos bugs. Estou ajustando tudo com carinho para melhorar sua experiência.<br />
-    <span className="block mt-2 font-medium">Sua presença aqui é muito especial!</span>
-  </p>
-</div>
+      <div className="mt-6 w-full max-w-xs text-center text-cyan-100/90">
+        <div className="flex items-center justify-center gap-2 mb-1">
+            <span className="text-lg animate-pulse hover:animate-spin transition-all duration-300">🔧</span>
+
+          <span className="font-semibold text-xs">Nota da dev</span>
+        </div>
+        <p className="text-xs mt-0.5 leading-relaxed">
+          Este player de áudio está em fase beta. Estamos trabalhando para corrigir 
+          problemas de carregamento que possam ocorrer durante a reprodução.
+        </p>
+      </div>
       <style jsx>{`
         button:active {
           transform: scale(0.97);
